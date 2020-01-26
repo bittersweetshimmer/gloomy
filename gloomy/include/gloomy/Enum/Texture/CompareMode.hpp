@@ -1,0 +1,13 @@
+#pragma once
+
+#include <gloomy/gl.hpp>
+#include <gloomy/Conversion/Enum.hpp>
+#include <gloomy/TypeAliases.hpp>
+#include <gloomy/GL/Raw/Enum.hpp>
+
+namespace gloomy {
+	enum class TextureCompareMode {
+		REF_TO_TEXTURE = gl::COMPARE_REF_TO_TEXTURE,
+		NONE = gl::NONE
+	};
+}
