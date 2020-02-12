@@ -32,23 +32,23 @@ namespace gloomy {
     private:
         std::vector<gloomy::DynamicAttribute> attributes;
 
-        friend struct Committable<VertexArray>::Trait;
+        friend typename Committable<VertexArray>::Trait;
     };
 
     template<> struct ObjectTrait<VertexArray> {
-        static inline ID<VertexArray> generate() { ID<VertexArray> id; gl::gen_vertex_arrays(1, &id.get()); return id; };
+        static inline ID<VertexArray> generate() { ID<VertexArray> id; GLOOMY_CHECK(gl::gen_vertex_arrays(1, &id.get())); return id; };
         static inline void release(const ID<VertexArray>& id) {
             assert(id.is_valid() && "Releasing null VertexArray.");
-            gl::delete_vertex_array(1, &id.get());
+            GLOOMY_CHECK(gl::delete_vertex_array(1, &id.get()));
         };
     };
 
     template<> struct BindableTrait<VertexArray> {
         static inline void bind(const VertexArray& va) {
             assert(va.get_id().is_valid() && "Binding not generated VertexArray.");
-            gl::bind_vertex_array(va.get_raw_id());
+            GLOOMY_CHECK(gl::bind_vertex_array(va.get_raw_id()));
         };
-        static inline void unbind(const VertexArray& va) { gl::bind_vertex_array(gloomy::null_raw_id); };
+        static inline void unbind(const VertexArray& va) { GLOOMY_CHECK(gl::bind_vertex_array(gloomy::null_raw_id)); };
     };
 
     template<> struct CommittableTrait<VertexArray> {
@@ -58,17 +58,17 @@ namespace gloomy {
             auto attrib_index = 0;
             for (const auto& attribute : va.attributes) {
                 for (auto part = 0; part < attribute.size; part += attribute.part_length()) {
-                    gl::enable_vertex_attrib_array(attrib_index);
-                    gl::vertex_attrib_pointer(attrib_index,
+                    GLOOMY_CHECK(gl::enable_vertex_attrib_array(attrib_index));
+                    GLOOMY_CHECK(gl::vertex_attrib_pointer(attrib_index,
                         attribute.size,
                         from_enum(attribute.type),
                         attribute.normalized,
                         attribute.stride,
                         reinterpret_cast<const void*>(attribute.offset)
-                    );
+                    ));
 
                     if (attribute.instanced) {
-                        gl::vertex_attrib_divisor(attrib_index, 1);
+                        GLOOMY_CHECK(gl::vertex_attrib_divisor(attrib_index, 1));
                     }
 
                     attrib_index += 1;

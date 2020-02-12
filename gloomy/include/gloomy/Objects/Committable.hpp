@@ -5,7 +5,7 @@
 namespace gloomy {
 	template<typename T>
 	struct CommittableTrait {
-		static inline auto commit(const T&) -> void = 0;
+		static inline auto commit(const T&) -> void;
 
 		static constexpr bool bind_before_commit = true;
 	};

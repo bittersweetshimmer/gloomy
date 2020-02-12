@@ -5,14 +5,15 @@
 #include <gloomy/TypeAliases.hpp>
 #include <gloomy/Objects/ID.hpp>
 #include <gloomy/Utilities/NonCopyable.hpp>
+#include <gloomy/Objects/Committable.hpp>
 
 #include <cassert>
 
 namespace gloomy {
 	template<typename T>
 	struct ObjectTrait {
-		static inline auto generate() -> ID<T> = 0;
-		static inline auto release(const ID<T>& id) -> void = 0;
+		static inline auto generate() -> ID<T>;
+		static inline auto release(const ID<T>& id) -> void;
 	};
 
 	struct AnyObject : public util::NonCopyable {

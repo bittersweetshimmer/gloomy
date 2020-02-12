@@ -30,7 +30,7 @@ namespace gloomy::util {
         template<template<typename> typename TemplateT>
         using into = TemplateT<T>;
 
-        template<typename T>
+        template<typename>
         constexpr auto offset() { return 0; }
     };
 }

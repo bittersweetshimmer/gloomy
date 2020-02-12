@@ -13,10 +13,10 @@ namespace gloomy::gl {
 
 namespace gloomy::util {
 	inline void check_error(const char* file, uint32_t line, const char* expression) {
-		auto error = gloomy::to_enum<Error>(gloomy::gl::get_error());
+		auto error = gloomy::to_enum<gloomy::Error>(gloomy::gl::get_error());
 
 		if (error != Error::NONE) {
-			std::cout << "OpenGL error:\n\tFile: " << file << ",\n\tLine: " << line << ",\n\tExpression: " << expression << std::endl;
+			std::cerr << "OpenGL error: " << gloomy::error_message(error) << "\n\tFile: " << file << ",\n\tLine: " << line << ",\n\tExpression: " << expression << std::endl;
 		}
 	}
 }
@@ -29,7 +29,6 @@ namespace gloomy::util {
 #define GLOOMY_CHECK(expr) (expr)
 #endif
 
-
 namespace gloomy::gl {
 	/*
 	inline void cull_face(gloomy::Enum mode) { glCullFace(mode); }
@@ -40,61 +39,61 @@ namespace gloomy::gl {
 	inline void polygon_mode(gloomy::Enum face, gloomy::Enum mode) { glPolygonMode(face, mode); }
 	*/
 
-	inline void hint(gloomy::Enum target, gloomy::Enum mode) { GLOOMY_CHECK(glHint(target, mode)); }
-	inline void enable(gloomy::Enum cap) { GLOOMY_CHECK(glEnable(cap)); }
-	inline void viewport(I32 x, I32 y, Size width, Size height) { GLOOMY_CHECK(glViewport(x, y, width, height)); }
-	inline void clear(Bitfield mask) { GLOOMY_CHECK(glClear(mask)); }
-	inline void clear_color(Float red, Float green, Float blue, Float alpha) { GLOOMY_CHECK(glClearColor(red, green, blue, alpha)); }
-	inline void blend_func(gloomy::Enum sfactor, gloomy::Enum dfactor) { GLOOMY_CHECK(glBlendFunc(sfactor, dfactor)); }
+	inline void hint(gloomy::Enum target, gloomy::Enum mode) { (glHint(target, mode)); }
+	inline void enable(gloomy::Enum cap) { (glEnable(cap)); }
+	inline void viewport(I32 x, I32 y, Size width, Size height) { (glViewport(x, y, width, height)); }
+	inline void clear(Bitfield mask) { (glClear(mask)); }
+	inline void clear_color(Float red, Float green, Float blue, Float alpha) { (glClearColor(red, green, blue, alpha)); }
+	inline void blend_func(gloomy::Enum sfactor, gloomy::Enum dfactor) { (glBlendFunc(sfactor, dfactor)); }
 	inline void blend_func_separate(gloomy::Enum sfactor_rgb, gloomy::Enum dfactor_rgb, gloomy::Enum sfactor_a, gloomy::Enum dfactor_a) {
-		GLOOMY_CHECK(glBlendFuncSeparate(sfactor_rgb, dfactor_rgb, sfactor_a, dfactor_a));
+		(glBlendFuncSeparate(sfactor_rgb, dfactor_rgb, sfactor_a, dfactor_a));
 	}
 
-	inline void gen_textures(Size n, U32* textures) { GLOOMY_CHECK(glGenTextures(n, textures)); }
-	inline void delete_textures(Size n, const U32* textures) { GLOOMY_CHECK(glDeleteTextures(n, textures)); }
-	inline void bind_texture(gloomy::Enum target, U32 texture) { GLOOMY_CHECK(glBindTexture(target, texture)); }
-	inline void active_texture(gloomy::Enum texture) { GLOOMY_CHECK(glActiveTexture(texture)); }
-	inline void tex_parameter_f(gloomy::Enum target, gloomy::Enum pname, Float param) { GLOOMY_CHECK(glTexParameterf(target, pname, param)); }
-	inline void tex_parameter_i(gloomy::Enum target, gloomy::Enum pname, I32 param) { GLOOMY_CHECK(glTexParameteri(target, pname, param)); }
+	inline void gen_textures(Size n, U32* textures) { (glGenTextures(n, textures)); }
+	inline void delete_textures(Size n, const U32* textures) { (glDeleteTextures(n, textures)); }
+	inline void bind_texture(gloomy::Enum target, U32 texture) { (glBindTexture(target, texture)); }
+	inline void active_texture(gloomy::Enum texture) { (glActiveTexture(texture)); }
+	inline void tex_parameter_f(gloomy::Enum target, gloomy::Enum pname, Float param) { (glTexParameterf(target, pname, param)); }
+	inline void tex_parameter_i(gloomy::Enum target, gloomy::Enum pname, I32 param) { (glTexParameteri(target, pname, param)); }
 	inline void tex_image_2D(gloomy::Enum target, I32 level, I32 internalformat, Size width, Size height, I32 border, gloomy::Enum format, gloomy::Enum type, const void* pixels) {
-		GLOOMY_CHECK(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
+		(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
 	}
 
-	inline void gen_buffers(Size n, U32* buffers) { GLOOMY_CHECK(glGenBuffers(n, buffers)); };
-	inline void bind_buffer(gloomy::Enum target, U32 buffer) { GLOOMY_CHECK(glBindBuffer(target, buffer)); }
-	inline void delete_buffers(Size n, const U32* buffers) { GLOOMY_CHECK(glDeleteBuffers(n, buffers)); }
-	inline void buffer_data(gloomy::Enum target, SizeIPointer size, const void* data, gloomy::Enum usage) { GLOOMY_CHECK(glBufferData(target, size, data, usage)); }
-	inline void buffer_sub_data(gloomy::Enum target, IPointer offset, SizeIPointer size, const void* data) { GLOOMY_CHECK(glBufferSubData(target, offset, size, data)); }
+	inline void gen_buffers(Size n, U32* buffers) { (glGenBuffers(n, buffers)); };
+	inline void bind_buffer(gloomy::Enum target, U32 buffer) { (glBindBuffer(target, buffer)); }
+	inline void delete_buffers(Size n, const U32* buffers) { (glDeleteBuffers(n, buffers)); }
+	inline void buffer_data(gloomy::Enum target, SizeIPointer size, const void* data, gloomy::Enum usage) { (glBufferData(target, size, data, usage)); }
+	inline void buffer_sub_data(gloomy::Enum target, IPointer offset, SizeIPointer size, const void* data) { (glBufferSubData(target, offset, size, data)); }
 
-	inline void bind_vertex_array(U32 array) { GLOOMY_CHECK(glBindVertexArray(array)); }
-	inline void delete_vertex_array(Size n, const U32* arrays) { GLOOMY_CHECK(glDeleteVertexArrays(n, arrays)); }
-	inline void gen_vertex_arrays(Size n, U32* arrays) { GLOOMY_CHECK(glGenVertexArrays(n, arrays)); }
-	inline void enable_vertex_attrib_array(U32 index) { GLOOMY_CHECK(glEnableVertexAttribArray(index)); }
+	inline void bind_vertex_array(U32 array) { (glBindVertexArray(array)); }
+	inline void delete_vertex_array(Size n, const U32* arrays) { (glDeleteVertexArrays(n, arrays)); }
+	inline void gen_vertex_arrays(Size n, U32* arrays) { (glGenVertexArrays(n, arrays)); }
+	inline void enable_vertex_attrib_array(U32 index) { (glEnableVertexAttribArray(index)); }
 	inline void vertex_attrib_pointer(U32 index, I32 size, gloomy::Enum type, Bool normalized, Size stride, const void* pointer) {
-		GLOOMY_CHECK(glVertexAttribPointer(index, size, type, normalized, stride, pointer));
+		(glVertexAttribPointer(index, size, type, normalized, stride, pointer));
 	}
-	inline void vertex_attrib_divisor(U32 index, U32 divisor) { GLOOMY_CHECK(glVertexAttribDivisor(index, divisor)); }
+	inline void vertex_attrib_divisor(U32 index, U32 divisor) { (glVertexAttribDivisor(index, divisor)); }
 
-	inline U32 create_shader(gloomy::Enum type) { GLOOMY_CHECK(return glCreateShader(type)); }
-	inline void delete_shader(U32 shader) { GLOOMY_CHECK(glDeleteShader(shader)); }
-	inline void shader_source(U32 shader, Size count, const Char* const* string, const I32* length) { GLOOMY_CHECK(glShaderSource(shader, count, string, length)); }
-	inline void compile_shader(U32 shader) { GLOOMY_CHECK(glCompileShader(shader)); }
-	inline void get_shader_iv(U32 shader, gloomy::Enum pname, I32* params) { GLOOMY_CHECK(glGetShaderiv(shader, pname, params)); }
-	inline void get_shader_info_log(U32 shader, Size bufSize, Size* length, Char* infolog) { GLOOMY_CHECK(glGetShaderInfoLog(shader, bufSize, length, infolog)); }
+	inline U32 create_shader(gloomy::Enum type) { return glCreateShader(type); }
+	inline void delete_shader(U32 shader) { (glDeleteShader(shader)); }
+	inline void shader_source(U32 shader, Size count, const Char* const* string, const I32* length) { (glShaderSource(shader, count, string, length)); }
+	inline void compile_shader(U32 shader) { (glCompileShader(shader)); }
+	inline void get_shader_iv(U32 shader, gloomy::Enum pname, I32* params) { (glGetShaderiv(shader, pname, params)); }
+	inline void get_shader_info_log(U32 shader, Size bufSize, Size* length, Char* infolog) { (glGetShaderInfoLog(shader, bufSize, length, infolog)); }
 
-	inline U32 create_program() { GLOOMY_CHECK(return glCreateProgram()); }
-	inline void delete_program(U32 program) { GLOOMY_CHECK(glDeleteProgram(program)); }
-	inline void use_program(U32 program) { GLOOMY_CHECK(glUseProgram(program)); }
-	inline void attach_shader(U32 program, U32 shader) { GLOOMY_CHECK(glAttachShader(program, shader)); }
-	inline void link_program(U32 program) { GLOOMY_CHECK(glLinkProgram(program)); }
-	inline void get_program_iv(U32 program, gloomy::Enum pname, I32* params) { GLOOMY_CHECK(glGetProgramiv(program, pname, params)); }
-	inline void get_program_info_log(U32 program, Size bufSize, Size* length, Char* infolog) { GLOOMY_CHECK(glGetProgramInfoLog(program, bufSize, length, infolog)); }
-	inline I32 get_uniform_location(U32 program, const Char* name) { GLOOMY_CHECK(return glGetUniformLocation(program, name)); }
+	inline U32 create_program() { return glCreateProgram(); }
+	inline void delete_program(U32 program) { (glDeleteProgram(program)); }
+	inline void use_program(U32 program) { (glUseProgram(program)); }
+	inline void attach_shader(U32 program, U32 shader) { (glAttachShader(program, shader)); }
+	inline void link_program(U32 program) { (glLinkProgram(program)); }
+	inline void get_program_iv(U32 program, gloomy::Enum pname, I32* params) { (glGetProgramiv(program, pname, params)); }
+	inline void get_program_info_log(U32 program, Size bufSize, Size* length, Char* infolog) { (glGetProgramInfoLog(program, bufSize, length, infolog)); }
+	inline I32 get_uniform_location(U32 program, const Char* name) { return glGetUniformLocation(program, name); }
 
-	inline void bind_framebuffer(gloomy::Enum target, U32 framebuffer) { GLOOMY_CHECK(glBindFramebuffer(target, framebuffer)); }
+	inline void bind_framebuffer(gloomy::Enum target, U32 framebuffer) { (glBindFramebuffer(target, framebuffer)); }
 
-	inline void draw_elements(gloomy::Enum mode, Size count, gloomy::Enum type, const void* indices) { GLOOMY_CHECK(glDrawElements(mode, count, type, indices)); }
-	inline void draw_arrays(gloomy::Enum mode, I32 first, Size count) { GLOOMY_CHECK(glDrawArrays(mode, first, count)); }
+	inline void draw_elements(gloomy::Enum mode, Size count, gloomy::Enum type, const void* indices) { (glDrawElements(mode, count, type, indices)); }
+	inline void draw_arrays(gloomy::Enum mode, I32 first, Size count) { (glDrawArrays(mode, first, count)); }
 
 	/*
 	typedef void (APIENTRYP PFNGLSCISSORPROC)(GLint x, GLint y, GLsizei width, GLsizei height);

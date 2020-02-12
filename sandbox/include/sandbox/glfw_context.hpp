@@ -6,7 +6,7 @@
 
 namespace sandbox {
     template<typename Fn>
-    int glfw_context(int width, int height, const char* window_name, Fn callable) {
+    int context(int width, int height, const char* window_name, Fn callable) {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -34,5 +34,15 @@ namespace sandbox {
         glfwTerminate();
 
         return 0;
+    }
+
+    template<typename Fn>
+    void loop(GLFWwindow& window, Fn callable) {
+        while (!glfwWindowShouldClose(&window)) {
+            callable();
+
+            glfwSwapBuffers(&window);
+            glfwPollEvents();
+        }
     }
 }

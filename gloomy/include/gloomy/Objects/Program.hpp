@@ -27,7 +27,7 @@ namespace gloomy {
         inline const std::vector<RawID>& get_shaders() const;
         inline void clear_shaders();
 
-        using UniformLocation = gloomy::util::Newtype<I32, struct UniformTag>;
+        using UniformLocation = gloomy::util::Distinct<I32, struct UniformTag>;
         UniformLocation get_uniform_location(const std::string& name) const;
 
     private:
@@ -38,19 +38,19 @@ namespace gloomy {
     };
 
     template<> struct ObjectTrait<Program> {
-        static inline ID<Program> generate() { ID<Program> id; id.get() = gl::create_program(); return id; };
+        static inline ID<Program> generate() { ID<Program> id; GLOOMY_CHECK(id.get() = gl::create_program()); return id; };
         static inline void release(const ID<Program>& id) {
             assert(id.is_valid() && "Releasing null Program.");
-            gl::delete_program(id.get());
+            GLOOMY_CHECK(gl::delete_program(id.get()));
         };
     };
 
     template<> struct BindableTrait<Program> {
         static inline void bind(const Program& program) {
             assert(program.get_id().is_valid() && "Binding not generated Program.");
-            gl::use_program(program.get_raw_id());
+            GLOOMY_CHECK(gl::use_program(program.get_raw_id()));
         };
-        static inline void unbind(const Program& texture) { gl::use_program(gloomy::null_raw_id); };
+        static inline void unbind(const Program& texture) { GLOOMY_CHECK(gl::use_program(gloomy::null_raw_id)); };
     };
 
     template<> struct CommittableTrait<Program> {
@@ -59,18 +59,18 @@ namespace gloomy {
             assert(program.shaders.size() != 0 && "Program commit with no attached shaders.");
 
             for (const auto& shader_id : program.shaders) {
-                gl::attach_shader(program.get_raw_id(), shader_id);
+                GLOOMY_CHECK(gl::attach_shader(program.get_raw_id(), shader_id));
             }
 
-            gl::link_program(program.get_raw_id());
+            GLOOMY_CHECK(gl::link_program(program.get_raw_id()));
 
             {
                 int32_t success;
                 char info[512];
-                gl::get_program_iv(program.get_raw_id(), gl::LINK_STATUS, &success);
+                GLOOMY_CHECK(gl::get_program_iv(program.get_raw_id(), gl::LINK_STATUS, &success));
 
                 if (!success) {
-                    gl::get_program_info_log(program.get_raw_id(), 512, nullptr, info);
+                    GLOOMY_CHECK(gl::get_program_info_log(program.get_raw_id(), 512, nullptr, info));
 
                     assert(success && "Program linking failed.");
                 }

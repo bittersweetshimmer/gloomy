@@ -7,19 +7,26 @@
 #include <gloomy/Enum/Buffer/IndexType.hpp>
 
 namespace gloomy {
-	template<PrimitiveKind kind, typename T> 
-	void draw_primitives(gloomy::Size size) {
-		gl::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(gloomy::gl_type<T>()), 0);
+	void draw_primitives(PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type) {
+		GLOOMY_CHECK(gl::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), 0));
+	};
+
+	void draw_triangles(gloomy::Size size, gloomy::IndexType type) {
+		gloomy::draw_primitives(PrimitiveKind::TRIANGLES, size, type);
+	};
+
+	void draw_lines(gloomy::Size size, gloomy::IndexType type) {
+		gloomy::draw_primitives(PrimitiveKind::LINES, size, type);
 	};
 
 	template<typename T>
 	void draw_triangles(gloomy::Size size) {
-		gloomy::draw_primitives<PrimitiveKind::TRIANGLES, T>(size);
+		gloomy::draw_primitives(PrimitiveKind::TRIANGLES, size, gloomy::index_type<T>());
 	};
 
 	template<typename T>
 	void draw_lines(gloomy::Size size) {
-		gloomy::draw_primitives<PrimitiveKind::LINES, T>(size);
+		gloomy::draw_primitives(PrimitiveKind::LINES, size, gloomy::index_type<T>());
 	};
 
 	struct Primitive {
@@ -39,6 +46,6 @@ namespace gloomy {
 	};
 
 	inline void Primitive::draw() const {
-		gl::draw_elements(gloomy::from_enum(this->kind), this->size, gloomy::from_enum(this->index_type), 0);
+		gloomy::draw_primitives(this->kind, this->size, this->index_type);
 	};
 }

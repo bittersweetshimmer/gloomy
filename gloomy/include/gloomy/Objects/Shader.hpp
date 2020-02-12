@@ -12,45 +12,45 @@
 #include <gloomy/Utilities/CopyOnWrite.hpp>
 
 namespace gloomy {
-    template<ShaderKind kind>
-    struct Shader : public Object<Shader<kind>>, public Committable<Shader<kind>> {
-        using Object<Shader<kind>>::Object;
+    template<ShaderKind Kind>
+    struct Shader : public Object<Shader<Kind>>, public Committable<Shader<Kind>> {
+        using Object<Shader<Kind>>::Object;
 
-        Shader() : source(gloomy::src::Shader<kind>()) {}
-        Shader(gloomy::src::Shader<kind>&& shader_source) : source(std::move(shader_source)) {};
-        Shader(const gloomy::src::Shader<kind>& shader_source) : source(shader_source) {};
+        Shader() : source(gloomy::src::Shader<Kind>()) {}
+        Shader(gloomy::src::Shader<Kind>&& shader_source) : source(std::move(shader_source)) {};
+        Shader(const gloomy::src::Shader<Kind>& shader_source) : source(shader_source) {};
         Shader(Shader&& other) noexcept;
         Shader& operator=(Shader&& other) noexcept;
 
-        constexpr static ShaderKind kind = kind;
+        constexpr static ShaderKind kind = Kind;
 
-        util::Cow<gloomy::src::Shader<kind>> source;
+        util::Cow<gloomy::src::Shader<Kind>> source;
     };
 
-    template<ShaderKind kind> struct ObjectTrait<Shader<kind>> {
-        static inline ID<Shader<kind>> generate() { ID<Shader<kind>> id; id.get() = gl::create_shader(gloomy::from_enum(kind)); return id; };
-        static inline void release(const ID<Shader<kind>>& id) {
+    template<ShaderKind Kind> struct ObjectTrait<Shader<Kind>> {
+        static inline ID<Shader<Kind>> generate() { ID<Shader<Kind>> id;  GLOOMY_CHECK(id.get() = gl::create_shader(gloomy::from_enum(Kind))); return id; };
+        static inline void release(const ID<Shader<Kind>>& id) {
             assert(id.is_valid() && "Releasing null Shader.");
-            gl::delete_shader(id.get());
+            GLOOMY_CHECK(gl::delete_shader(id.get()));
         };
     };
 
-    template<ShaderKind kind> struct CommittableTrait<Shader<kind>> {
-        static inline void commit(const Shader<kind>& shader) {
+    template<ShaderKind Kind> struct CommittableTrait<Shader<Kind>> {
+        static inline void commit(const Shader<Kind>& shader) {
             const auto& shader_source = shader.source.get();
 
             const char* c_source = shader_source.source.c_str();
 
-            gl::shader_source(shader.get_raw_id(), 1, &c_source, nullptr);
-            gl::compile_shader(shader.get_raw_id());
+            GLOOMY_CHECK(gl::shader_source(shader.get_raw_id(), 1, &c_source, nullptr));
+            GLOOMY_CHECK(gl::compile_shader(shader.get_raw_id()));
 
             {
                 int32_t success;
                 char info[512];
-                gl::get_shader_iv(shader.get_raw_id(), gl::COMPILE_STATUS, &success);
+                GLOOMY_CHECK(gl::get_shader_iv(shader.get_raw_id(), gl::COMPILE_STATUS, &success));
 
                 if (!success) {
-                    gl::get_shader_info_log(shader.get_raw_id(), 512, nullptr, info);
+                    GLOOMY_CHECK(gl::get_shader_info_log(shader.get_raw_id(), 512, nullptr, info));
 
                     assert(success && "Shader compilation failed.");
                 }
@@ -58,20 +58,20 @@ namespace gloomy {
         };
     };
 
-    template<ShaderKind kind>
-    Shader<kind>::Shader(Shader&& other) noexcept
-        : Object<Shader<kind>>(std::move(other.id)), source(std::move(other.source)) {
-        other.id = gloomy::null_id<Shader<kind>>();
+    template<ShaderKind Kind>
+    Shader<Kind>::Shader(Shader&& other) noexcept
+        : Object<Shader<Kind>>(std::move(other.id)), source(std::move(other.source)) {
+        other.id = gloomy::null_id<Shader<Kind>>();
     }
 
-    template<ShaderKind kind>
-    Shader<kind>& gloomy::Shader<kind>::operator=(Shader&& other) noexcept {
+    template<ShaderKind Kind>
+    Shader<Kind>& gloomy::Shader<Kind>::operator=(Shader&& other) noexcept {
         if (this != &other) {
             this->release();
 
             this->id = std::move(other.id);
             this->source = std::move(other.source);
-            other.id = gloomy::null_id<Shader<kind>>();
+            other.id = gloomy::null_id<Shader<Kind>>();
         }
 
         return *this;

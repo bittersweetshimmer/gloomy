@@ -24,7 +24,7 @@
 #include <gloomy/GL/Raw/API.hpp>
 #include <gloomy/TypeAliases.hpp>
 
-#include <gloomy/Utilities/Newtype.hpp>
+#include <gloomy/Utilities/Distinct.hpp>
 #include <gloomy/Utilities/NonCopyable.hpp>
 #include <gloomy/Utilities/Tuple.hpp>
 

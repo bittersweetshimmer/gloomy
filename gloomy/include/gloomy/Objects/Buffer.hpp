@@ -32,19 +32,19 @@ namespace gloomy {
     };
 
     template<BufferKind Kind> struct ObjectTrait<Buffer<Kind>> {
-        static inline ID<Buffer<Kind>> generate() { ID<Buffer<Kind>> id; gl::gen_buffers(1, &id.get()); return id; };
+        static inline ID<Buffer<Kind>> generate() { ID<Buffer<Kind>> id; GLOOMY_CHECK(gl::gen_buffers(1, &id.get())); return id; };
         static inline void release(const ID<Buffer<Kind>>& id) {
             assert(id.is_valid() && "Releasing null Buffer.");
-            gl::delete_buffers(1, &id.get());
+            GLOOMY_CHECK(gl::delete_buffers(1, &id.get()));
         };
     };
 
     template<BufferKind Kind> struct BindableTrait<Buffer<Kind>> {
         static inline void bind(const Buffer<Kind>& buffer) {
             assert(buffer.get_id().is_valid() && "Binding not generated Buffer.");
-            gl::bind_buffer(gloomy::from_enum(Kind), buffer.get_raw_id());
+            GLOOMY_CHECK(gl::bind_buffer(gloomy::from_enum(Kind), buffer.get_raw_id()));
         };
-        static inline void unbind(const Buffer<Kind>& buffer) { gl::bind_buffer(gloomy::from_enum(Kind), gloomy::null_raw_id); };
+        static inline void unbind(const Buffer<Kind>& buffer) { GLOOMY_CHECK(gl::bind_buffer(gloomy::from_enum(Kind), gloomy::null_raw_id)); };
     };
 
     template<BufferKind Kind> struct CommittableTrait<Buffer<Kind>> {
@@ -52,7 +52,7 @@ namespace gloomy {
         static inline void commit(const Buffer<Kind>& buffer) {
             const auto& bytes = buffer.source;
 
-            gl::buffer_data(gloomy::from_enum(Kind), bytes.size(), bytes.data(), gloomy::from_enum(buffer.usage.combined()));
+            GLOOMY_CHECK(gl::buffer_data(gloomy::from_enum(Kind), bytes.size(), bytes.data(), gloomy::from_enum(buffer.usage.combined())));
         };
     };
 

@@ -20,9 +20,9 @@
 #include <stb/stb_image.h>
 
 namespace gloomy::src {
-	template<ShaderKind kind>
+	template<ShaderKind Kind>
 	struct Shader : public util::NonCopyable {
-		constexpr static auto kind = kind;
+		constexpr static auto kind = Kind;
 		
 		std::string source;
 
@@ -31,7 +31,7 @@ namespace gloomy::src {
 		~Shader();
 
 		Shader(Shader&& other) = default;
-		Shader<kind>& operator=(Shader&& other) noexcept {
+		Shader<Kind>& operator=(Shader&& other) noexcept {
 			this->source = std::move(other.source);
 		}
 
@@ -40,22 +40,22 @@ namespace gloomy::src {
 		static nonstd::expected<Shader, std::ifstream::failure> from_file(std::filesystem::path path);
 	};
 
-	template<ShaderKind kind>
-	inline Shader<kind>::Shader(std::string&& source) : source(std::forward<std::string>(source)) {};
+	template<ShaderKind Kind>
+	inline Shader<Kind>::Shader(std::string&& source) : source(std::forward<std::string>(source)) {};
 
-	template<ShaderKind kind>
-	inline Shader<kind>::~Shader() {};
+	template<ShaderKind Kind>
+	inline Shader<Kind>::~Shader() {};
 	
-	template<ShaderKind kind>
-	inline Shader<kind> Shader<kind>::clone() const {
-		Shader<kind> other;
+	template<ShaderKind Kind>
+	inline Shader<Kind> Shader<Kind>::clone() const {
+		Shader<Kind> other;
 		other.source = this->source;
 		return other;
 	};
 
-	template<ShaderKind kind>
-	inline nonstd::expected<Shader<kind>, std::ifstream::failure> Shader<kind>::from_file(std::filesystem::path path) {
-		Shader<kind> shader;
+	template<ShaderKind Kind>
+	inline nonstd::expected<Shader<Kind>, std::ifstream::failure> Shader<Kind>::from_file(std::filesystem::path path) {
+		Shader<Kind> shader;
 
 		std::ifstream file;
 

@@ -11,13 +11,14 @@ namespace gloomy {
 	};
 
     template<typename T>
-    constexpr IndexType index_type() {
-        static_assert(false, "Not a valid index buffer value type.");
-    };
+    constexpr IndexType index_type();
 
     template<> constexpr IndexType index_type<U8>() { return IndexType::U8; }
     template<> constexpr IndexType index_type<U16>() { return IndexType::U16; }
     template<> constexpr IndexType index_type<U32>() { return IndexType::U32; }
+
+    template<typename T>
+    constexpr IndexType index_type() = delete;
 
     namespace priv {
         template<IndexType T>

@@ -30,7 +30,6 @@ nonstd::expected<gloomy::src::Image, void*> gloomy::src::Image::from_file(std::f
     auto size = static_cast<size_t>(static_cast<int64_t>(width)* static_cast<int64_t>(height) * 4);
     auto pointer = PixelsPtr(reinterpret_cast<std::byte*>(data), stbi_image_free);
 
-    assert(data != nullptr && "Invalid image data.");
-
+    if (data == nullptr) return nonstd::make_unexpected(nullptr);
     return gloomy::src::Image(Pixels(std::move(pointer), size), width, height);
 }

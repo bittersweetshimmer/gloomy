@@ -2,17 +2,17 @@
 
 #include <gloomy/gl.hpp>
 #include <gloomy/TypeAliases.hpp>
-#include <gloomy/Utilities/Newtype.hpp>
+#include <gloomy/Utilities/Distinct.hpp>
 
 namespace gloomy {
 	using RawID = U32;
 	constexpr RawID null_raw_id = 0;
 
 	template<typename T>
-	struct ID : util::Newtype<RawID, T> {
-		using util::Newtype<RawID, T>::Newtype;
+	struct ID : util::Distinct<RawID, T> {
+		using util::Distinct<RawID, T>::Distinct;
 
-		ID() : util::Newtype<RawID, T>(null_raw_id) {};
+		ID() : util::Distinct<RawID, T>(null_raw_id) {};
 
 		constexpr auto is_valid() const -> bool { return this->get() != null_raw_id; }
 		constexpr auto is_null() const -> bool { return !this->is_valid(); }

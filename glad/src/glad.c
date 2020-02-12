@@ -38,19 +38,19 @@ static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 
 #ifdef _MSC_VER
 #ifdef __has_include
-  #if __has_include(<winapifamily.h>)
-    #define HAVE_WINAPIFAMILY 1
-  #endif
+	#if __has_include(<winapifamily.h>)
+    	#define HAVE_WINAPIFAMILY 1
+	#endif
 #elif _MSC_VER >= 1700 && !_USING_V110_SDK71_
-  #define HAVE_WINAPIFAMILY 1
+	#define HAVE_WINAPIFAMILY 1
 #endif
 #endif
 
 #ifdef HAVE_WINAPIFAMILY
-  #include <winapifamily.h>
-  #if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-    #define IS_UWP 1
-  #endif
+	#include <winapifamily.h>
+	#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+    	#define IS_UWP 1
+	#endif
 #endif
 
 static

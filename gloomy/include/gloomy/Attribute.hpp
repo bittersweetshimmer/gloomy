@@ -2,13 +2,13 @@
 #include <vector>
 #include <gloomy/TypeAliases.hpp>
 #include <gloomy/Enum/Type.hpp>
-#include <gloomy/Utilities/Newtype.hpp>
+#include <gloomy/Utilities/Distinct.hpp>
 #include <gloomy/Utilities/TypeList.hpp>
 
 namespace gloomy {
     template<typename Tag, typename T, typename DT = typename T::value_type, Size L = T().size(), bool Instanced = false, bool Normalized = false>
-    struct Attribute final : public util::Newtype<T, Tag> {
-        using util::Newtype<T, Tag>::Newtype;
+    struct Attribute final : public util::Distinct<T, Tag> {
+        using util::Distinct<T, Tag>::Distinct;
 
         using tag = Tag;
         using type = T;
@@ -73,8 +73,8 @@ namespace gloomy {
 
     template<typename Attr, typename... Attrs>
     constexpr std::vector<DynamicAttribute> make_attributes() {
-        static constexpr auto stride = (Attr::size + ... + Attrs::size);
-        static constexpr auto length = 1 + sizeof...(Attrs);
+        constexpr auto stride = (Attr::size + ... + Attrs::size);
+        constexpr auto length = 1 + sizeof...(Attrs);
 
         std::vector<DynamicAttribute> array(length);
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <cstddef>
+#include <cstring>
 #include <gloomy/Utilities/Span.hpp>
 
 namespace gloomy::util {

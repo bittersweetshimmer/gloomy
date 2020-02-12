@@ -3,18 +3,18 @@
 
 namespace gloomy::util {
     template <typename T, typename Phantom>
-    class Newtype {
+    class Distinct {
     public:
         using underlying_type = T;
     private:
         underlying_type value = underlying_type();
     public:
-        template<typename T, typename... Ts>
-        constexpr Newtype(T&& argument, Ts&&... arguments) : value{ {std::forward<T>(argument), std::forward<Ts>(arguments)...} } {}
+        template<typename A, typename... As>
+        constexpr Distinct(A&& argument, As&&... arguments) : value{ {std::forward<A>(argument), std::forward<As>(arguments)...} } {}
 
-        explicit constexpr Newtype(const underlying_type& value) : value(value) {}
-        explicit constexpr Newtype(underlying_type&& value) : value(std::move(value)) {}
-        constexpr Newtype() : value(underlying_type()) {}
+        explicit constexpr Distinct(const underlying_type& value) : value(value) {}
+        explicit constexpr Distinct(underlying_type&& value) : value(std::move(value)) {}
+        constexpr Distinct() : value(underlying_type()) {}
         constexpr underlying_type& get() { return value; }
         constexpr underlying_type const& get() const { return value; }
 

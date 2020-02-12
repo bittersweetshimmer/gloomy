@@ -19,9 +19,7 @@ namespace gloomy {
     };
 
     template<typename T>
-    constexpr Type gl_type() {
-        static_assert(false, "Not a valid OpenGL type.");
-    };
+    constexpr Type gl_type();
 
     template<> constexpr Type gl_type<Float>() { return Type::FLOAT; }
     template<> constexpr Type gl_type<U8>() { return Type::U8; }
@@ -31,6 +29,9 @@ namespace gloomy {
     template<> constexpr Type gl_type<U32>() { return Type::U32; }
     template<> constexpr Type gl_type<I32>() { return Type::I32; }
     template<> constexpr Type gl_type<Double>() { return Type::DOUBLE; }
+
+    template<typename T>
+    constexpr Type gl_type() = delete;
 
     namespace priv {
         template<Type T>
