@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <filesystem>
+#include <sstream>
 #include <fstream>
 
 #include <gloomy/Sources/Shader.hpp>
@@ -20,7 +21,7 @@ namespace learnopengl {
 			string_stream << file.rdbuf();
 			file.close();
 
-			return gloomy::src::Shader<Kind>{.source = string_stream.str()};
+			return gloomy::src::Shader<Kind>(string_stream.str());
 		}
 		catch (std::ifstream::failure e) {
 			assert(false && "I/O error.");
