@@ -3,4 +3,4 @@
 #if defined(_WIN32) || defined(__CYGWIN__)
     #include <Windows.h>
 #endif
-#include <glad/glad.h>
+#include <glad/glad.hpp>
