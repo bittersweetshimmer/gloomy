@@ -10,9 +10,8 @@ namespace gloomy {
 
 	template<typename T>
 	struct ID : util::Distinct<RawID, T> {
-		using util::Distinct<RawID, T>::Distinct;
-
 		ID() : util::Distinct<RawID, T>(null_raw_id) {};
+		ID(RawID raw) : util::Distinct<RawID, T>(raw) {};
 
 		constexpr auto is_valid() const -> bool { return this->get() != null_raw_id; }
 		constexpr auto is_null() const -> bool { return !this->is_valid(); }

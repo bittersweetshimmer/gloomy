@@ -9,8 +9,13 @@ namespace gloomy::util {
     private:
         underlying_type value = underlying_type();
     public:
-        template<typename A, typename... As>
-        constexpr Distinct(A&& argument, As&&... arguments) : value{ {std::forward<A>(argument), std::forward<As>(arguments)...} } {}
+        template<typename A, typename A2, typename... As>
+        constexpr Distinct(A&& argument, A2&& argument2, As&&... arguments) : value{
+        {
+            std::forward<A>(argument),
+            std::forward<A2>(argument2),
+            std::forward<As>(arguments)...
+        } } {}
 
         explicit constexpr Distinct(const underlying_type& value) : value(value) {}
         explicit constexpr Distinct(underlying_type&& value) : value(std::move(value)) {}

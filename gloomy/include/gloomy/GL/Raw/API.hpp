@@ -7,13 +7,13 @@
 #include <gloomy/Conversion/Enum.hpp>
 #include <gloomy/Enum/Error.hpp>
 
-namespace gloomy::gl {
+namespace gloomy::gl::raw {
 	inline gloomy::Enum get_error() { return glGetError(); }
 }
 
 namespace gloomy::util {
 	inline void check_error(const char* file, uint32_t line, const char* expression) {
-		auto error = gloomy::to_enum<gloomy::Error>(gloomy::gl::get_error());
+		auto error = gloomy::to_enum<gloomy::Error>(gloomy::gl::raw::get_error());
 
 		if (error != Error::NONE) {
 			std::cerr << "OpenGL error: " << gloomy::error_message(error) << "\n\tFile: " << file << ",\n\tLine: " << line << ",\n\tExpression: " << expression << std::endl;
@@ -29,7 +29,7 @@ namespace gloomy::util {
 #define GLOOMY_CHECK(expr) (expr)
 #endif
 
-namespace gloomy::gl {
+namespace gloomy::gl::raw {
 	/*
 	inline void cull_face(gloomy::Enum mode) { glCullFace(mode); }
 	inline void front_face(gloomy::Enum mode) { glFrontFace(mode); }

@@ -1,7 +1,7 @@
 #include <gloomy/Objects/Program.hpp>
 
 gloomy::Program::Program(Program&& other) noexcept
-    : Object(std::move(other.id)), shaders(std::move(other.shaders)) {
+    : Object(std::move(other.id)), shaders(std::move(other.shaders)), cached_locations(std::move(other.cached_locations)) {
     other.id = gloomy::null_id<Program>();
 }
 
@@ -11,6 +11,7 @@ gloomy::Program& gloomy::Program::operator=(Program&& other) noexcept {
 
         this->id = std::move(other.id);
         this->shaders = std::move(other.shaders);
+        this->cached_locations = std::move(other.cached_locations);
 
         other.id = gloomy::null_id<Program>();
     }
@@ -30,18 +31,16 @@ inline void gloomy::Program::clear_shaders() {
     this->shaders.clear();
 }
 
-/*
 gloomy::Program::UniformLocation gloomy::Program::get_uniform_location(const std::string& name) const {
     auto found = this->cached_locations.find(name);
     if (found != this->cached_locations.end()) {
         return found->second;
     }
     else {
-        auto location = gl::get_uniform_location(this->get_raw_id(), name.c_str());
+        auto location = gl::raw::get_uniform_location(this->get_raw_id(), name.c_str());
 
-        this->cached_locations.insert({ name, location });
+        this->cached_locations.insert({ name,  gloomy::Program::UniformLocation(location) });
 
-        return location;
+        return gloomy::Program::UniformLocation(location);
     }
 }
-*/

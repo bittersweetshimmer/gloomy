@@ -7,7 +7,7 @@
 
 namespace gloomy {
 	enum class TextureCompareMode {
-		REF_TO_TEXTURE = gl::COMPARE_REF_TO_TEXTURE,
-		NONE = gl::NONE
+		REF_TO_TEXTURE = gl::raw::COMPARE_REF_TO_TEXTURE,
+		NONE = gl::raw::NONE
 	};
 }

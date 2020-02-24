@@ -34,3 +34,5 @@
 #include <gloomy/Attribute.hpp>
 #include <gloomy/Vertex.hpp>
 #include <gloomy/Primitive.hpp>
+
+#include <gloomy/API.hpp>

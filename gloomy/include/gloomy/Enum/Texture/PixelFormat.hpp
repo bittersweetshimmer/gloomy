@@ -6,14 +6,14 @@
 
 namespace gloomy {
     enum class PixelFormat : Enum {
-        RED = gl::RED,
-        RED_GREEN = gl::RG,
-        BGR = gl::BGR,
-        BGRA = gl::BGRA,
-        RGB = gl::RGB,
-        RGBA = gl::RGBA,
-        STENCIL_INDEX = gl::STENCIL_INDEX,
-        DEPTH_COMPONENT = gl::DEPTH_COMPONENT,
-        DEPTH_STENCIL = gl::DEPTH_STENCIL
+        RED = gl::raw::RED,
+        RED_GREEN = gl::raw::RG,
+        BGR = gl::raw::BGR,
+        BGRA = gl::raw::BGRA,
+        RGB = gl::raw::RGB,
+        RGBA = gl::raw::RGBA,
+        STENCIL_INDEX = gl::raw::STENCIL_INDEX,
+        DEPTH_COMPONENT = gl::raw::DEPTH_COMPONENT,
+        DEPTH_STENCIL = gl::raw::DEPTH_STENCIL
     };
 };

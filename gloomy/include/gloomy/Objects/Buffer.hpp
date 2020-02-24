@@ -7,11 +7,9 @@
 #include <gloomy/Objects/Object.hpp>
 #include <gloomy/GL/Raw/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
-#include <gloomy/Utilities/CopyOnWrite.hpp>
-#include <gloomy/Utilities/Span.hpp>
-#include <gloomy/Utilities/DynamicArray.hpp>
 #include <gloomy/Enum/Buffer/Usage.hpp>
 #include <gloomy/Enum/Buffer/Kind.hpp>
+#include <gloomy/Sources/BufferView.hpp>
 
 namespace gloomy {
     template<BufferKind Kind>
@@ -19,46 +17,46 @@ namespace gloomy {
         using Object<Buffer<Kind>>::Object;
 
         template<typename T>
-        Buffer(const T& bytes, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW)) : source(util::as_byte_span(bytes)), usage(usage) {};
+        Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW)) : view(src::BufferView::from(container)), usage(usage) {};
 
         Buffer(Buffer&& other) noexcept;
         Buffer& operator=(Buffer&& other) noexcept;
 
         BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW);
-        util::ByteSpan source;
+        src::BufferView view;
 
         constexpr static BufferKind kind = Kind;
         friend struct Committable<Buffer>::Trait;
     };
 
     template<BufferKind Kind> struct ObjectTrait<Buffer<Kind>> {
-        static inline ID<Buffer<Kind>> generate() { ID<Buffer<Kind>> id; GLOOMY_CHECK(gl::gen_buffers(1, &id.get())); return id; };
+        static inline ID<Buffer<Kind>> generate() {
+            return ID<Buffer<Kind>>(gl::gen_buffer());
+        };
         static inline void release(const ID<Buffer<Kind>>& id) {
-            assert(id.is_valid() && "Releasing null Buffer.");
-            GLOOMY_CHECK(gl::delete_buffers(1, &id.get()));
+            gl::delete_buffer(id);
         };
     };
 
     template<BufferKind Kind> struct BindableTrait<Buffer<Kind>> {
         static inline void bind(const Buffer<Kind>& buffer) {
-            assert(buffer.get_id().is_valid() && "Binding not generated Buffer.");
-            GLOOMY_CHECK(gl::bind_buffer(gloomy::from_enum(Kind), buffer.get_raw_id()));
+            gl::bind_buffer(Kind, buffer.get_raw_id());
         };
-        static inline void unbind(const Buffer<Kind>& buffer) { GLOOMY_CHECK(gl::bind_buffer(gloomy::from_enum(Kind), gloomy::null_raw_id)); };
+        static inline void unbind(const Buffer<Kind>& buffer) {
+            gl::unbind_buffer(Kind);
+        };
     };
 
     template<BufferKind Kind> struct CommittableTrait<Buffer<Kind>> {
         static constexpr bool bind_before_commit = true;
         static inline void commit(const Buffer<Kind>& buffer) {
-            const auto& bytes = buffer.source;
-
-            GLOOMY_CHECK(gl::buffer_data(gloomy::from_enum(Kind), bytes.size(), bytes.data(), gloomy::from_enum(buffer.usage.combined())));
+            gl::buffer_data(Kind, buffer.view, buffer.usage);
         };
     };
 
     template<BufferKind Kind>
     Buffer<Kind>::Buffer(Buffer&& other) noexcept
-        : Object<Buffer<Kind>>(std::move(other.id)), usage(other.usage), source(std::move(other.source)) {
+        : Object<Buffer<Kind>>(std::move(other.id)), usage(other.usage), view(std::move(other.view)) {
         other.id = gloomy::null_id<Buffer<Kind>>();
     }
 
@@ -69,7 +67,7 @@ namespace gloomy {
 
             this->id = std::move(other.id);
             this->usage = other.usage;
-            this->source = std::move(other.source);
+            this->view = std::move(other.view);
 
             other.id = gloomy::null_id<Buffer<Kind>>();
         }

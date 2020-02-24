@@ -6,11 +6,11 @@
 
 namespace gloomy {
     enum class ShaderKind : Enum {
-        VERTEX = gl::VERTEX_SHADER,
-        FRAGMENT = gl::FRAGMENT_SHADER,
-        GEOMETRY = gl::GEOMETRY_SHADER,
-        COMPUTE = gl::COMPUTE_SHADER,
-        TESSALATION_CONTROL = gl::TESS_CONTROL_SHADER,
-        TESSALATION_EVALUATION = gl::TESS_EVALUATION_SHADER
+        VERTEX = gl::raw::VERTEX_SHADER,
+        FRAGMENT = gl::raw::FRAGMENT_SHADER,
+        GEOMETRY = gl::raw::GEOMETRY_SHADER,
+        COMPUTE = gl::raw::COMPUTE_SHADER,
+        TESSALATION_CONTROL = gl::raw::TESS_CONTROL_SHADER,
+        TESSALATION_EVALUATION = gl::raw::TESS_EVALUATION_SHADER
     };
 }

@@ -5,15 +5,15 @@
 
 namespace gloomy {
 	enum class BufferUsageCombined : gloomy::Enum {
-		STREAM_DRAW = gl::STREAM_DRAW,
-		STREAM_READ = gl::STREAM_READ,
-		STREAM_COPY = gl::STREAM_COPY,
-		STATIC_DRAW = gl::STATIC_DRAW,
-		STATIC_READ = gl::STATIC_READ,
-		STATIC_COPY = gl::STATIC_COPY,
-		DYNAMIC_DRAW = gl::DYNAMIC_DRAW,
-		DYNAMIC_READ = gl::DYNAMIC_READ,
-		DYNAMIC_COPY = gl::DYNAMIC_COPY
+		STREAM_DRAW = gl::raw::STREAM_DRAW,
+		STREAM_READ = gl::raw::STREAM_READ,
+		STREAM_COPY = gl::raw::STREAM_COPY,
+		STATIC_DRAW = gl::raw::STATIC_DRAW,
+		STATIC_READ = gl::raw::STATIC_READ,
+		STATIC_COPY = gl::raw::STATIC_COPY,
+		DYNAMIC_DRAW = gl::raw::DYNAMIC_DRAW,
+		DYNAMIC_READ = gl::raw::DYNAMIC_READ,
+		DYNAMIC_COPY = gl::raw::DYNAMIC_COPY
 	};
 
 	struct BufferUsage {

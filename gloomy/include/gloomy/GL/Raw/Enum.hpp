@@ -3,7 +3,7 @@
 #include <gloomy/TypeAliases.hpp>
 #include <gloomy/Conversion/Enum.hpp>
 
-namespace gloomy::gl {
+namespace gloomy::gl::raw {
 inline constexpr gloomy::Enum DEPTH_BUFFER_BIT = GL_DEPTH_BUFFER_BIT;
 inline constexpr gloomy::Enum STENCIL_BUFFER_BIT = GL_STENCIL_BUFFER_BIT;
 inline constexpr gloomy::Enum COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;

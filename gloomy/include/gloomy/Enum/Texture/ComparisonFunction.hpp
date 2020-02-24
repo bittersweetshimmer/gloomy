@@ -7,13 +7,13 @@
 
 namespace gloomy {
 	enum class TextureComparisonFunction {
-		LEQUAL = gl::LEQUAL,
-		GEQUAL = gl::GEQUAL,
-		LESS = gl::LESS,
-		GREATER = gl::GREATER,
-		EQUAL = gl::EQUAL,
-		NOTEQUAL = gl::NOTEQUAL,
-		ALWAYS = gl::ALWAYS,
-		NEVER = gl::NEVER
+		LEQUAL = gl::raw::LEQUAL,
+		GEQUAL = gl::raw::GEQUAL,
+		LESS = gl::raw::LESS,
+		GREATER = gl::raw::GREATER,
+		EQUAL = gl::raw::EQUAL,
+		NOTEQUAL = gl::raw::NOTEQUAL,
+		ALWAYS = gl::raw::ALWAYS,
+		NEVER = gl::raw::NEVER
 	};
 }

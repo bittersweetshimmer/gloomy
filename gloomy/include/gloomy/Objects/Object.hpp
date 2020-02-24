@@ -95,7 +95,7 @@ namespace gloomy {
 	}
 
 	template<typename T>
-	struct Owned : T {
+	struct Owned final : T {
 		virtual ~Owned() { static_cast<T*>(this)->release(); }
 		Owned() = default;
 		Owned(T&& t) : T(std::move(t)) {}

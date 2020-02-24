@@ -72,7 +72,7 @@ namespace gloomy {
     }
 
     template<typename Attr, typename... Attrs>
-    constexpr std::vector<DynamicAttribute> make_attributes() {
+    std::vector<DynamicAttribute> make_attributes() {
         constexpr auto stride = (Attr::size + ... + Attrs::size);
         constexpr auto length = 1 + sizeof...(Attrs);
 

@@ -7,7 +7,7 @@
 
 namespace gloomy {
     enum class TextureMagFilter {
-        NEAREST = gl::NEAREST,
-        LINEAR = gl::LINEAR
+        NEAREST = gl::raw::NEAREST,
+        LINEAR = gl::raw::LINEAR
     };
 }

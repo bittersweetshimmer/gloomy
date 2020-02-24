@@ -8,18 +8,18 @@
 
 namespace gloomy {
     enum class Type : Enum {
-        FLOAT = gl::FLOAT,
-        I8 = gl::BYTE,
-        U8 = gl::UNSIGNED_BYTE,
-        I16 = gl::SHORT,
-        U16 = gl::UNSIGNED_SHORT,
-        I32 = gl::INT,
-        U32 = gl::UNSIGNED_INT,
-        DOUBLE = gl::DOUBLE
+        FLOAT = gl::raw::FLOAT,
+        I8 = gl::raw::BYTE,
+        U8 = gl::raw::UNSIGNED_BYTE,
+        I16 = gl::raw::SHORT,
+        U16 = gl::raw::UNSIGNED_SHORT,
+        I32 = gl::raw::INT,
+        U32 = gl::raw::UNSIGNED_INT,
+        DOUBLE = gl::raw::DOUBLE
     };
 
     template<typename T>
-    constexpr Type gl_type();
+    constexpr Type gl_type() = delete;
 
     template<> constexpr Type gl_type<Float>() { return Type::FLOAT; }
     template<> constexpr Type gl_type<U8>() { return Type::U8; }
@@ -29,9 +29,6 @@ namespace gloomy {
     template<> constexpr Type gl_type<U32>() { return Type::U32; }
     template<> constexpr Type gl_type<I32>() { return Type::I32; }
     template<> constexpr Type gl_type<Double>() { return Type::DOUBLE; }
-
-    template<typename T>
-    constexpr Type gl_type() = delete;
 
     namespace priv {
         template<Type T>

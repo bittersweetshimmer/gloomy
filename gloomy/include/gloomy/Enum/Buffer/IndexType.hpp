@@ -5,20 +5,17 @@
 
 namespace gloomy {
 	enum class IndexType : gloomy::Enum {
-		U8 = gl::UNSIGNED_BYTE,
-		U16 = gl::UNSIGNED_SHORT,
-		U32 = gl::UNSIGNED_INT
+		U8 = gl::raw::UNSIGNED_BYTE,
+		U16 = gl::raw::UNSIGNED_SHORT,
+		U32 = gl::raw::UNSIGNED_INT
 	};
 
     template<typename T>
-    constexpr IndexType index_type();
+    constexpr IndexType index_type() = delete;
 
     template<> constexpr IndexType index_type<U8>() { return IndexType::U8; }
     template<> constexpr IndexType index_type<U16>() { return IndexType::U16; }
     template<> constexpr IndexType index_type<U32>() { return IndexType::U32; }
-
-    template<typename T>
-    constexpr IndexType index_type() = delete;
 
     namespace priv {
         template<IndexType T>
