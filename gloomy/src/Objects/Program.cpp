@@ -31,16 +31,13 @@ inline void gloomy::Program::clear_shaders() {
     this->shaders.clear();
 }
 
-gloomy::Program::UniformLocation gloomy::Program::get_uniform_location(const std::string& name) const {
+const gloomy::Uniform& gloomy::Program::uniform(const std::string& name) const {
     auto found = this->cached_locations.find(name);
     if (found != this->cached_locations.end()) {
         return found->second;
     }
     else {
-        auto location = gl::raw::get_uniform_location(this->get_raw_id(), name.c_str());
-
-        this->cached_locations.insert({ name,  gloomy::Program::UniformLocation(location) });
-
-        return gloomy::Program::UniformLocation(location);
+        this->cached_locations.insert({ name, gl::get_uniform(this->get_raw_id(), name) });
+        return this->cached_locations.at(name);
     }
 }

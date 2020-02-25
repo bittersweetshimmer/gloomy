@@ -1,4 +1,6 @@
 #pragma once
+
+#include <iostream>
 #include <optional>
 #include <functional>
 
@@ -51,6 +53,8 @@ namespace gloomy {
 
                 if (!success) {
                     GLOOMY_CHECK(gl::raw::get_shader_info_log(shader.get_raw_id(), 512, nullptr, info));
+
+                    std::cerr << "Shader compilation failed: " << "\n\tShader object id: " << shader.get_raw_id() << "\n\tInfo log: " << info << "\n" << std::flush;
 
                     assert(success && "Shader compilation failed.");
                 }

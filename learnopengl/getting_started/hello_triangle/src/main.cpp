@@ -6,22 +6,6 @@
 constexpr auto SCR_WIDTH = 800;
 constexpr auto SCR_HEIGHT = 600;
 
-constexpr auto VERTEX_SHADER_SOURCE = R"(
-  #version 330 core
-  layout (location = 0) in vec3 aPos;
-  void main() {
-    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-  }
-)";
-
-constexpr auto FRAGMENT_SHADER_SOURCE = R"(
-  #version 330 core
-  out vec4 FragColor;
-  void main() {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-  }
-)";
-
 int main(int argc, char *argv[]) {
   return learnopengl::glfw_context(SCR_WIDTH, SCR_HEIGHT, "gloomy", [&](GLFWwindow &window) {
     using Vec3 = std::array<gloomy::Float, 3>;
@@ -44,8 +28,20 @@ int main(int argc, char *argv[]) {
     };
 
     const auto program = gloomy::make_ready<gloomy::Program>(
-      gloomy::make_ready<gloomy::VertexShader>(gloomy::src::VertexShader(VERTEX_SHADER_SOURCE)),
-      gloomy::make_ready<gloomy::FragmentShader>(gloomy::src::FragmentShader(FRAGMENT_SHADER_SOURCE))
+      gloomy::make_ready<gloomy::VertexShader>(gloomy::src::VertexShader(R"(
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        void main() {
+          gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+        }
+      )")),
+      gloomy::make_ready<gloomy::FragmentShader>(gloomy::src::FragmentShader(R"(
+        #version 330 core
+        out vec4 FragColor;
+        void main() {
+          FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        }
+      )"))
     );
     
     const auto index_buffer = gloomy::make_ready<gloomy::IndexBuffer>(indices);

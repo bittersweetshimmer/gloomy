@@ -2,5 +2,8 @@
 -I/usr/include/c++/9.2.1/
 -Iglad/include/
 -Igloomy/include/
--Iexamples/include/
--Istb/include/
+-Ilearnopengl/glm/include/
+-Ilearnopengl/getting_started/hello_triangle/include/
+-Ilearnopengl/getting_started/shaders/include/
+-Ilearnopengl/getting_started/textures/include/
+-Ilearnopengl/getting_started/transformations/include/

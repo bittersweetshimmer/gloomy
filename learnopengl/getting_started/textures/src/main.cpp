@@ -21,14 +21,15 @@ int main(int argc, char *argv[]) {
 
     const auto indices = std::array<Index, 6>{0, 1, 3, 1, 2, 3};
     const auto vertices = std::array<Vertex, 4>{
-      Vertex{{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
-      Vertex{{0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+      Vertex{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+      Vertex{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
       Vertex{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
-      Vertex{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
+      Vertex{{-0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
     };
-    const auto image = learnopengl::load_image("assets/images/lenna.png").value();
 
-    const auto texture = gloomy::make_ready<gloomy::Texture2D>(image);
+    const auto texture1 = gloomy::make_ready<gloomy::Texture2D>(learnopengl::load_image("assets/images/lenna.png").value());
+    const auto texture2 = gloomy::make_ready<gloomy::Texture2D>(learnopengl::load_image("assets/images/awesomeface.png").value());
+
     const auto program = gloomy::make_ready<gloomy::Program>(
       gloomy::make_ready<gloomy::VertexShader>(learnopengl::load_vertex_shader("assets/shaders/VertexShader.hlsl").value()),
       gloomy::make_ready<gloomy::FragmentShader>(learnopengl::load_fragment_shader("assets/shaders/FragmentShader.hlsl").value())
@@ -42,7 +43,15 @@ int main(int argc, char *argv[]) {
 
     learnopengl::loop(window, [&] {
       gloomy::fill(0.2f, 0.3f, 0.3f, 1.0f);
-      gloomy::bind(vertex_array, program, texture);
+
+      program.bind();
+      program.uniform("u_texture1").sampler(0);
+      program.uniform("u_texture2").sampler(1);
+
+      texture1.bind_at_slot(0);
+      texture2.bind_at_slot(1);
+
+      vertex_array.bind();
       gloomy::draw_indexed<Index>(gloomy::PrimitiveKind::TRIANGLES, indices.size());
     });
   });

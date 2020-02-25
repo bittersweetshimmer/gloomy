@@ -10,6 +10,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 #include <gloomy/Sources/Image.hpp>
 #include <gloomy/Enum/Texture/Kind.hpp>
+#include <gloomy/Objects/Uniform.hpp>
 
 namespace gloomy {
     struct Program : public Object<Program>, public Bindable<Program>, public Committable<Program> {
@@ -27,12 +28,10 @@ namespace gloomy {
         inline const std::vector<RawID>& get_shaders() const;
         inline void clear_shaders();
 
-        using UniformLocation = gloomy::util::Distinct<I32, struct UniformTag>;
-        UniformLocation get_uniform_location(const std::string& name) const;
-
+        const Uniform& uniform(const std::string& name) const;
     private:
         std::vector<RawID> shaders;
-        mutable std::unordered_map<std::string, UniformLocation> cached_locations;
+        mutable std::unordered_map<std::string, Uniform> cached_locations;
 
         friend struct CommittableTrait<Program>;
     };

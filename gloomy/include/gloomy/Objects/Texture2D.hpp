@@ -24,6 +24,8 @@ struct Texture2D : public Object<Texture2D>,
   Texture2D &operator=(Texture2D &&other) noexcept;
 
   std::optional<std::reference_wrapper<const gloomy::src::Image>> image;
+
+  inline void bind_at_slot(size_t index) const { gl::bind_texture_at_slot(TextureTarget::TEXTURE_2D, this->get_raw_id(), index); }
 };
 
 template <> struct ObjectTrait<Texture2D> {
