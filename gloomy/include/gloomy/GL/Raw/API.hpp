@@ -41,6 +41,7 @@ namespace gloomy::gl::raw {
 
 	inline void hint(gloomy::Enum target, gloomy::Enum mode) { (glHint(target, mode)); }
 	inline void enable(gloomy::Enum cap) { (glEnable(cap)); }
+	inline void disable(gloomy::Enum cap) { (glDisable(cap)); }
 	inline void viewport(I32 x, I32 y, Size width, Size height) { (glViewport(x, y, width, height)); }
 	inline void clear(Bitfield mask) { (glClear(mask)); }
 	inline void clear_color(Float red, Float green, Float blue, Float alpha) { (glClearColor(red, green, blue, alpha)); }

@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <memory>
+#include <bitset>
 
 #include <gloomy/GL/Raw/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
@@ -20,8 +21,24 @@
 #include <gloomy/Enum/Buffer/IndexType.hpp>
 
 #include <gloomy/Objects/UniformLocation.hpp>
+#include <gloomy/Enum/BufferBit.hpp>
+#include <gloomy/Enum/Capability.hpp>
 
 namespace gloomy::gl {
+    inline void disable(gloomy::Capability cap) {
+        GLOOMY_CHECK(gl::raw::disable(gloomy::from_enum(cap)));
+    };
+
+    inline void enable(gloomy::Capability cap) {
+        GLOOMY_CHECK(gl::raw::enable(gloomy::from_enum(cap)));
+    };
+
+    inline void clear(util::Bitmask<gloomy::BufferBit> mask) {
+        GLOOMY_CHECK(gl::raw::clear(mask.bits()));
+    };
+
+    inline void clear_color(Float red, Float green, Float blue, Float alpha) { GLOOMY_CHECK(gl::raw::clear_color(red, green, blue, alpha)); }
+
     template<typename T>
     inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, const T& container) {
         GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), container.data()));
