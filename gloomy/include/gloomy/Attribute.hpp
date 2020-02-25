@@ -11,7 +11,7 @@ namespace gloomy {
         struct has_size {
         private:
             template <typename U>
-            static constexpr decltype(size_t{std::declval<U>().size()}, bool()) test_get(int) { return true; }
+            static constexpr decltype(std::declval<U>().size(), bool()) test_get(int) { return true; }
 
             template <typename U>
             static constexpr bool test_get(...) { return false; }
@@ -24,7 +24,7 @@ namespace gloomy {
         struct has_length {
         private:
             template <typename U>
-            static constexpr decltype(size_t{std::declval<U>().length()}, bool()) test_get(int) { return true; }
+            static constexpr decltype(std::declval<U>().length(), bool()) test_get(int) { return true; }
 
             template <typename U>
             static constexpr bool test_get(...) { return false; }
@@ -35,9 +35,9 @@ namespace gloomy {
 
         template <typename T>
         constexpr auto get_size_or_default() {
-            if constexpr (has_size<T>::value) { return T().size(); }
-            else if constexpr (has_length<T>::value) { return T().length(); }
-            return 1ul;
+            if constexpr (has_size<T>::value) { return size_t{T().size()}; }
+            else if constexpr (has_length<T>::value) { return size_t{T().length()}; }
+            return size_t{0};
         };
     }
 
