@@ -12,11 +12,8 @@ constexpr auto SCR_HEIGHT = 600;
 
 int main(int argc, char *argv[]) {
   return learnopengl::glfw_context(SCR_WIDTH, SCR_HEIGHT, "gloomy", [&](GLFWwindow &window) {
-    using Vec3 = std::array<gloomy::Float, 3>;
-    using Vec2 = std::array<gloomy::Float, 2>;
-
-    using Position = gloomy::Attribute<struct PositionTag, Vec3>;
-    using TextureCoord = gloomy::Attribute<struct TextureCoordTag, Vec2>;
+    using Position = gloomy::Attribute<struct PositionTag, glm::vec3>;
+    using TextureCoord = gloomy::Attribute<struct TextureCoordTag, glm::vec2>;
 
     using Attributes = gloomy::Attributes<Position, TextureCoord>;
     using Vertex = gloomy::Vertex<Position, TextureCoord>;
@@ -24,10 +21,10 @@ int main(int argc, char *argv[]) {
 
     const auto indices = std::array<Index, 6>{0, 1, 3, 1, 2, 3};
     const auto vertices = std::array<Vertex, 4>{
-      Vertex{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}},
-      Vertex{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-      Vertex{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-      Vertex{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}}
+      Vertex{Position(0.5f,  0.5f, 0.0f), TextureCoord(1.0f, 1.0f)},
+      Vertex{Position(0.5f, -0.5f, 0.0f), TextureCoord(1.0f, 0.0f)},
+      Vertex{Position(-0.5f, -0.5f, 0.0f), TextureCoord(0.0f, 0.0f)},
+      Vertex{Position(-0.5f,  0.5f, 0.0f), TextureCoord(0.0f, 1.0f)}
     };
 
     const auto texture1 = gloomy::make_ready<gloomy::Texture2D>(learnopengl::load_image("assets/images/lenna.png").value());

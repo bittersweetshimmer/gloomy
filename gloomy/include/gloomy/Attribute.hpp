@@ -6,7 +6,42 @@
 #include <gloomy/Utilities/TypeList.hpp>
 
 namespace gloomy {
-    template<typename Tag, typename T, typename DT = typename T::value_type, Size L = T().size(), bool Instanced = false, bool Normalized = false>
+    namespace priv {
+        template <typename T>
+        struct has_size {
+        private:
+            template <typename U>
+            static constexpr decltype(size_t{std::declval<U>().size()}, bool()) test_get(int) { return true; }
+
+            template <typename U>
+            static constexpr bool test_get(...) { return false; }
+
+        public:
+            static constexpr bool value = test_get<T>(int());
+        };
+
+        template <typename T>
+        struct has_length {
+        private:
+            template <typename U>
+            static constexpr decltype(size_t{std::declval<U>().length()}, bool()) test_get(int) { return true; }
+
+            template <typename U>
+            static constexpr bool test_get(...) { return false; }
+
+        public:
+            static constexpr bool value = test_get<T>(int());
+        };
+
+        template <typename T>
+        constexpr auto get_size_or_default() {
+            if constexpr (has_size<T>::value) { return T().size(); }
+            else if constexpr (has_length<T>::value) { return T().length(); }
+            return 1ul;
+        };
+    }
+
+    template<typename Tag, typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type, bool Instanced = false, bool Normalized = false>
     struct Attribute final : public util::Distinct<T, Tag> {
         using util::Distinct<T, Tag>::Distinct;
 
