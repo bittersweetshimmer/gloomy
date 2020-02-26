@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(gloomy)
-set(SOURCES "src/glad.cpp" "src/gloomy.cpp" "src/Objects/Program.cpp" "src/Objects/VertexArray.cpp")
+set(SOURCES "src/glad.c" "src/gloomy.cpp" "src/Objects/Program.cpp" "src/Objects/VertexArray.cpp")
 
 option(GLOOMY_DEBUG "Check OpenGL errors after each call." off)
 
