@@ -1,7 +1,5 @@
 image:
   - Visual Studio 2017
-build_script:
+before_build:
 - cmd: >-
     cmake -H. -B./build -G "Visual Studio 15"
-    
-    cmake --build . --config "Debug"
