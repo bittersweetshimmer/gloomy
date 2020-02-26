@@ -41,6 +41,15 @@ namespace gloomy {
         };
     }
 
+    template<typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type>
+    struct AttributePadding final {
+        using data_type = DT;
+        
+        static constexpr const Size size = sizeof(T);
+        static constexpr const Size length = L;
+        static constexpr const bool padding = true;
+    };
+
     template<typename Tag, typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type, bool Instanced = false, bool Normalized = false>
     struct Attribute final : public util::Distinct<T, Tag> {
         using util::Distinct<T, Tag>::Distinct;
@@ -54,6 +63,9 @@ namespace gloomy {
         static constexpr const Size length = L;
         static constexpr const bool normalized = Normalized;
         static constexpr const bool instanced = Instanced;
+        static constexpr const bool padding = false;
+
+        using Pad = AttributePadding<T, L, DT>;
     };
 
     struct DynamicAttribute final {
@@ -66,6 +78,7 @@ namespace gloomy {
 
         Bool instanced = false;
         Bool normalized = false;
+        Bool padding = false;
 
         constexpr auto part_length() const {
             return this->size % 4 == 0 ? 4 :
@@ -88,14 +101,28 @@ namespace gloomy {
 
         template<typename Attr>
         DynamicAttribute make_attribute(GLsizei stride, intptr_t offset) {
-            return DynamicAttribute{
-                .type = gl_type<typename Attr::data_type>(),
-                .size = Attr::length,
-                .stride = stride,
-                .offset = offset,
-                .instanced = Attr::instanced,
-                .normalized = Attr::normalized
-            };
+            if constexpr (Attr::padding) {
+                return DynamicAttribute{
+                    .type = gl_type<typename Attr::data_type>(),
+                    .size = Attr::length,
+                    .stride = stride,
+                    .offset = offset,
+                    .instanced = false,
+                    .normalized = false,
+                    .padding = Attr::padding
+                };
+            }
+            else {
+                return DynamicAttribute{
+                    .type = gl_type<typename Attr::data_type>(),
+                    .size = Attr::length,
+                    .stride = stride,
+                    .offset = offset,
+                    .instanced = Attr::instanced,
+                    .normalized = Attr::normalized,
+                    .padding = Attr::padding
+                };
+            }
         };
 
         template<typename AttrList, typename Attr, typename... Attrs>

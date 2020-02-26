@@ -33,13 +33,6 @@ namespace gloomy {
 		if constexpr (sizeof...(Ts) != 0) { commit<Ts...>(committables...); };
 	}
 
-	template<typename... Ts>
-	inline void commit_together(const Ts&... committables) {
-		gloomy::bind(committables...);
-		gloomy::commit(committables...);
-		gloomy::unbind(committables...);
-	}
-
 	template<typename Fn, typename... Ts>
 	inline void staged(Fn callable, const Ts&... stageable) {
 		gloomy::bind(stageable...);

@@ -56,6 +56,8 @@ namespace gloomy {
             auto attrib_index = 0;
             for (const auto& attribute : va.attributes) {
                 for (auto part = 0; part < attribute.size; part += attribute.part_length()) {
+                    if (attribute.padding) continue;
+                     
                     GLOOMY_CHECK(gl::raw::enable_vertex_attrib_array(attrib_index));
                     GLOOMY_CHECK(gl::raw::vertex_attrib_pointer(attrib_index,
                         attribute.size,

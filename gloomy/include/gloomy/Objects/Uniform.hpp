@@ -41,8 +41,23 @@ namespace gloomy {
         };
 
         template<typename T, typename... Ts>
-        inline void values(Ts&&... values) const {
+        inline void vec_values(Ts&&... values) const {
             gl::set_uniform_by_values<T>(this->_location, std::forward<Ts>(values)...);
+        };
+
+        template<typename... Ts>
+        inline void fvec_values(Ts&&... values) const {
+            gl::set_uniform_by_values<gloomy::Float>(this->_location, std::forward<Ts>(values)...);
+        };
+
+        template<typename... Ts>
+        inline void ivec_values(Ts&&... values) const {
+            gl::set_uniform_by_values<gloomy::I32>(this->_location, std::forward<Ts>(values)...);
+        };
+
+        template<typename... Ts>
+        inline void uivec_values(Ts&&... values) const {
+            gl::set_uniform_by_values<gloomy::U32>(this->_location, std::forward<Ts>(values)...);
         };
 
         template<size_t M, size_t N = M>
