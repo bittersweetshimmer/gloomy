@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(SOURCES "src/gloomy.cpp" "src/Objects/Program.cpp" "src/Objects/VertexArray.cpp")
+project(gloomy)
+set(SOURCES "src/glad.cpp" "src/gloomy.cpp" "src/Objects/Program.cpp" "src/Objects/VertexArray.cpp")
+
+option(GLOOMY_DEBUG "Check OpenGL errors after each call." off)
 
 add_library(gloomy ${SOURCES})
+if(GLOOMY_DEBUG)
+    target_compile_definitions(gloomy PUBLIC -DGLOOMY_DEBUG)
+    message("gloomy: Compiling with OpenGL call error checks.")
+endif()
 
 target_include_directories(gloomy PUBLIC ./include/)
-
-target_include_directories(gloomy PRIVATE ${PROJECT_BINARY_DIR}/glad/include/)
-target_link_directories(gloomy PRIVATE ${PROJECT_BINARY_DIR}/glad/build/)
-target_link_libraries(gloomy glad)
 
 set_target_properties(gloomy PROPERTIES
                       CXX_STANDARD 20)

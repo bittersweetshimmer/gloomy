@@ -21,8 +21,6 @@ namespace gloomy::util {
 	}
 }
 
-#define GLOOMY_DEBUG
-
 #ifdef GLOOMY_DEBUG
 #define GLOOMY_CHECK(expr) do { expr; gloomy::util::check_error(__FILE__, __LINE__, #expr); } while (false)
 #else
