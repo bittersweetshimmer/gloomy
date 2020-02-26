@@ -1,0 +1,6 @@
+image:
+  - Visual Studio 2017
+build_script:
+- cmd: >-
+    cmake -H. -B./build -G "Visual Studio 15" -D GLOOMY_DEBUG:BOOL=TRUE -D GLOOMY_EXAMPLES:BOOL=TRUE
+    cmake --build . --config "Debug"
