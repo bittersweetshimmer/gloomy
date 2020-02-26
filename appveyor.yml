@@ -2,4 +2,8 @@ image:
   - Visual Studio 2017
 before_build:
 - cmd: >-
+    git submodule update --init --recursive
+
     cmake -H. -B./build -G "Visual Studio 15"
+build:
+  project: ALL_BUILD
