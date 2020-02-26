@@ -19,5 +19,9 @@ All examples can be found [here](https://github.com/bittersweetshimmer/gloomy-le
 > make -j8
 ```
 
+### 3rd party code
+- [bitmask](https://github.com/oliora/bitmask) - Type safe bitmask - `BSL-1.0`
+- [glad](https://glad.dav1d.de/) - GL loader-generator
+
 ### Acknowledgments
 - [LearnOpenGL](https://learnopengl.com/) - great tutorials on modern OpenGL.
