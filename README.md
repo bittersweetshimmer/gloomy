@@ -1,4 +1,4 @@
-# gloomy
+# gloomy ![appveyor](https://img.shields.io/appveyor/build/bittersweetshimmer/gloomy?style=flat-square)
 Some kind of safer OpenGL wrappers and convenience namespace.
 
 ### Build
@@ -11,8 +11,6 @@ Some kind of safer OpenGL wrappers and convenience namespace.
 
 ##### Examples
 All examples are in a separate repo [here](https://github.com/bittersweetshimmer/gloomy-learnopengl).
-
-Building:
 ```sh
 > git submodule update --init --recursive
 > mkdir build
