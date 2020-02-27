@@ -131,7 +131,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::bind_texture(gloomy::from_enum(target), gloomy::null_raw_id)); 
     };
 
-    inline void active_texture(size_t index) { GLOOMY_CHECK(gl::raw::active_texture(gl::raw::TEXTURE0 + index)); }
+    inline void active_texture(size_t index) { GLOOMY_CHECK(gl::raw::active_texture(gl::raw::TEXTURE0 + static_cast<gloomy::Enum>(index))); }
 
     inline void bind_texture_at_slot(gloomy::TextureTarget target, gloomy::RawID id, size_t index) {
         gl::active_texture(index);

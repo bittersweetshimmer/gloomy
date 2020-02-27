@@ -49,7 +49,7 @@ namespace gloomy {
         static inline void bind(const Program& program) {
             gl::use_program(program.get_raw_id());
         };
-        static inline void unbind(const Program& program) {
+        static inline void unbind(const Program&) {
             gl::unbind_program();
         };
     };

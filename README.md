@@ -6,7 +6,11 @@ Some kind of safer OpenGL wrappers and convenience namespace.
 > mkdir build
 > cd build
 > cmake .. # just a static library
-> make -j8 # or msbuild yadda yadda if you're using Visual Studio.
+> make -j8 # on Linux/or if you're using make generator
+```
+If you're using Visual Studio then it's `msbuild yadda yadda`. This works fine [on my machine](https://i.imgur.com/f5uGQ.jpg).
+```cmd
+msbuild gloomy_all.sln /m
 ```
 
 ##### Examples

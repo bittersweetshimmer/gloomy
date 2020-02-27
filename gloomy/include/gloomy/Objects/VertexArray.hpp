@@ -46,7 +46,7 @@ namespace gloomy {
             assert(va.get_id().is_valid() && "Binding not generated VertexArray.");
             GLOOMY_CHECK(gl::raw::bind_vertex_array(va.get_raw_id()));
         };
-        static inline void unbind(const VertexArray& va) { GLOOMY_CHECK(gl::raw::bind_vertex_array(gloomy::null_raw_id)); };
+        static inline void unbind(const VertexArray&) { GLOOMY_CHECK(gl::raw::bind_vertex_array(gloomy::null_raw_id)); };
     };
 
     template<> struct CommittableTrait<VertexArray> {
@@ -82,8 +82,8 @@ namespace gloomy {
         this->attributes = { attributes... };
     }
 
-    inline void VertexArray::set_attributes(std::vector<gloomy::DynamicAttribute> attributes) {
-        this->attributes = attributes;
+    inline void VertexArray::set_attributes(std::vector<gloomy::DynamicAttribute> new_attributes) {
+        this->attributes = new_attributes;
     }
 
     inline const std::vector<gloomy::DynamicAttribute>& gloomy::VertexArray::get_attributes() {

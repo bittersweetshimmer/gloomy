@@ -41,7 +41,7 @@ template <> struct BindableTrait<Texture2D> {
   static inline void bind(const Texture2D &texture) {
     gl::bind_texture(TextureTarget::TEXTURE_2D, texture.get_raw_id());
   };
-  static inline void unbind(const Texture2D &texture) {
+  static inline void unbind(const Texture2D &) {
     gl::unbind_texture(TextureTarget::TEXTURE_2D);
   };
 };
