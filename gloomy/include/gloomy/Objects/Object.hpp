@@ -25,6 +25,16 @@ namespace gloomy {
 	};
 
 	template<typename T>
+	struct Owned final : T {
+		virtual ~Owned() { static_cast<T*>(this)->release(); }
+		Owned() = default;
+		Owned(T&& t) : T(std::move(t)) {}
+		Owned(Owned&& o) : T(std::move(static_cast<T&&>(std::move(o)))) {}
+		Owned& operator=(T&& o) { *static_cast<T*>(this) = std::move(o); return *this; }
+		Owned& operator=(Owned&& o) { *static_cast<T*>(this) = static_cast<T&&>(std::move(o)); return *this; }
+	};
+
+	template<typename T>
 	struct Object : AnyObject {
 		using Trait = ObjectTrait<T>;
 
@@ -41,7 +51,7 @@ namespace gloomy {
 		virtual inline void release() final;
 
 		using object_type = T;
-
+		using Owned = Owned<T>;
 	protected:
 		ID<T> id = null_id<T>();
 	};
@@ -93,13 +103,6 @@ namespace gloomy {
 	inline void release(const ID<T>& id) {
 		return Object<T>::Trait::release(id);
 	}
-
-	template<typename T>
-	struct Owned final : T {
-		virtual ~Owned() { static_cast<T*>(this)->release(); }
-		Owned() = default;
-		Owned(T&& t) : T(std::move(t)) {}
-	};
 
 	template<typename T, typename... Args>
 	Owned<T> make(Args&&... args) {
