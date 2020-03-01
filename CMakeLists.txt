@@ -1,16 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(gloomy_all VERSION 0.1 LANGUAGES CXX C)
-
-option(GLOOMY_EXAMPLES "Build LearnOpenGL examples." OFF)
+project(gloomy VERSION 0.1 LANGUAGES CXX C)
 
 add_subdirectory(vendor)
 add_subdirectory(gloomy)
-
-if(GLOOMY_EXAMPLES)
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/learnopengl/CMakeLists.txt)
-        add_subdirectory(learnopengl)
-    else()
-        message(FATAL_ERROR "gloomy: No learnopengl submodule found. Have you run `git submodule update --init --recursive`?")
-    endif()
-endif()

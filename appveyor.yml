@@ -4,7 +4,7 @@ before_build:
 - cmd: >-
     git submodule update --init --recursive
 
-    cmake -H. -B./build -G "Visual Studio 16 2019" -D GLOOMY_DEBUG:BOOL=TRUE -D GLOOMY_EXAMPLES:BOOL=TRUE
+    cmake -H. -B./build -G "Visual Studio 16 2019" -D GLOOMY_DEBUG:BOOL=TRUE
 build:
-  project: build/gloomy_all.sln
+  project: build/gloomy.sln
   parallel: true

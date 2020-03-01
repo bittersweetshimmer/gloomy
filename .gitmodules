@@ -1,6 +1,3 @@
-[submodule "learnopengl"]
-	path = learnopengl
-	url = https://github.com/bittersweetshimmer/gloomy-learnopengl
 [submodule "vendor/bitmask"]
 	path = vendor/bitmask
 	url = https://github.com/oliora/bitmask

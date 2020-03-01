@@ -10,17 +10,7 @@ Some kind of safer OpenGL wrappers and convenience namespace.
 ```
 If you're using Visual Studio then it's `msbuild yadda yadda`. This works fine [on my machine](https://i.imgur.com/f5uGQ.jpg).
 ```cmd
-msbuild gloomy_all.sln /m
-```
-
-##### Examples
-All examples are in a separate repo [here](https://github.com/bittersweetshimmer/gloomy-learnopengl).
-```sh
-> git submodule update --init --recursive
-> mkdir build
-> cd build
-> cmake .. -D GLOOMY_DEBUG:BOOL=TRUE -D GLOOMY_EXAMPLES:BOOL=TRUE # examples and error checking
-> make -j8
+msbuild gloomy.sln /m
 ```
 
 ### 3rd party code
