@@ -5,7 +5,7 @@ namespace gloomy::util {
     constexpr auto type_offset(size_t acc = 0) {
         if constexpr (std::is_same_v<T, R>) return acc;
         else return type_offset<T, Rs...>(acc + sizeof(R));
-    };
+    }
 
     template<typename T, typename... Ts>
     struct TypeList {

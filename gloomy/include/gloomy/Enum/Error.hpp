@@ -24,5 +24,5 @@ namespace gloomy {
                 else if (error == Error::STACK_UNDERFLOW) return "stack underflow";
                 else if (error == Error::STACK_OVERFLOW) return "stack overflow";
                 else return "no error";
-        };
+        }
 }

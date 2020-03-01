@@ -17,7 +17,8 @@ namespace gloomy {
         using Object<Buffer<Kind>>::Object;
 
         template<typename T>
-        Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW)) : view(src::BufferView::from(container)), usage(usage) {};
+        Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
+         : view(src::BufferView::from(container)), usage(usage) {}
 
         Buffer(Buffer&& other) noexcept;
         Buffer& operator=(Buffer&& other) noexcept;

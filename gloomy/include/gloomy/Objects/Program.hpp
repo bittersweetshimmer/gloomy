@@ -17,7 +17,7 @@ namespace gloomy {
         using Object<Program>::Object;
 
         template<typename... Ts>
-        Program(Ts&&... shaders) : shaders{{std::forward<Ts>(shaders).get_raw_id()...}} {};
+        Program(Ts&&... shaders) : shaders{{std::forward<Ts>(shaders).get_raw_id()...}} {}
         Program(Program&& other) noexcept;
         Program& operator=(Program&& other) noexcept;
 

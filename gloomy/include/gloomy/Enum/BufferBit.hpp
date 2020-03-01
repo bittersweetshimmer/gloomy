@@ -11,5 +11,5 @@ namespace gloomy {
         STENCIL = gl::raw::STENCIL_BUFFER_BIT,
 	};
 
-    BITMASK_DEFINE_MAX_ELEMENT(gloomy::BufferBit, COLOR);
+    BITMASK_DEFINE_MAX_ELEMENT(gloomy::BufferBit, COLOR)
 }

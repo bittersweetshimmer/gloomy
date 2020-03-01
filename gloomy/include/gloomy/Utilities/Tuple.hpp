@@ -31,12 +31,12 @@ namespace gloomy::util {
 		template<typename T>
 		T& get() {
 			return *reinterpret_cast<T*>(this->block.data() + type_offset<T, A, As...>());
-		};
+		}
 
 		template<typename T>
 		const T& get() const {
 			return *reinterpret_cast<const T*>(this->block.data() + type_offset<T, A, As...>());
-		};
+		}
 
 		template<typename T, typename... Ts>
 		constexpr void assign(T&& value, Ts&&... values) {

@@ -58,7 +58,7 @@ namespace gloomy::gl::raw {
 		(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
 	}
 
-	inline void gen_buffers(Size n, U32* buffers) { (glGenBuffers(n, buffers)); };
+	inline void gen_buffers(Size n, U32* buffers) { (glGenBuffers(n, buffers)); }
 	inline void bind_buffer(gloomy::Enum target, U32 buffer) { (glBindBuffer(target, buffer)); }
 	inline void delete_buffers(Size n, const U32* buffers) { (glDeleteBuffers(n, buffers)); }
 	inline void buffer_data(gloomy::Enum target, SizeIPointer size, const void* data, gloomy::Enum usage) { (glBufferData(target, size, data, usage)); }

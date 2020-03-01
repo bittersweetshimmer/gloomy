@@ -21,5 +21,5 @@ namespace gloomy {
 
 	inline void Primitive::draw() const {
 		gloomy::gl::draw_elements(this->kind, this->size, this->index_type);
-	};
+	}
 }

@@ -38,7 +38,7 @@ namespace gloomy {
             if constexpr (has_size<T>::value) { return size_t{T().size()}; }
             else if constexpr (has_length<T>::value) { return size_t{T().length()}; }
             return size_t{0};
-        };
+        }
     }
 
     template<typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type>
@@ -97,7 +97,7 @@ namespace gloomy {
                 using Tail = typename TList::Tail;
                 return attribute_offset<T, Tail>(acc + Head::size);
             }
-        };
+        }
 
         template<typename Attr>
         DynamicAttribute make_attribute(GLsizei stride, intptr_t offset) {
@@ -123,14 +123,14 @@ namespace gloomy {
                     .padding = Attr::padding
                 };
             }
-        };
+        }
 
         template<typename AttrList, typename Attr, typename... Attrs>
         constexpr void make_attributes(std::vector<DynamicAttribute>& array, GLsizei stride, size_t position = 0) {
             array[position] = make_attribute<Attr>(stride, attribute_offset<Attr, AttrList>());
 
             if constexpr (sizeof...(Attrs) > 0) make_attributes<AttrList, Attrs...>(array, stride, position + 1);
-        };
+        }
     }
 
     template<typename Attr, typename... Attrs>
@@ -143,7 +143,7 @@ namespace gloomy {
         priv::template make_attributes<util::TypeList<Attr, Attrs...>, Attr, Attrs...>(array, stride);
 
         return array;
-    };
+    }
 
     template<typename T, typename... Ts>
     struct Attributes : util::TypeList<T, Ts...> {

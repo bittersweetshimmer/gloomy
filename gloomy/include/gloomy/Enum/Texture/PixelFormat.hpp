@@ -16,4 +16,4 @@ namespace gloomy {
         DEPTH_COMPONENT = gl::raw::DEPTH_COMPONENT,
         DEPTH_STENCIL = gl::raw::DEPTH_STENCIL
     };
-};
+}

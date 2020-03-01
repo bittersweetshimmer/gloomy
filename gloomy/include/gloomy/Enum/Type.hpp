@@ -46,4 +46,4 @@ namespace gloomy {
 
     template<Type T>
     using from_gl_type = typename priv::from_gl_type<T>::type;
-};
+}

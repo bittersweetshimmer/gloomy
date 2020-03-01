@@ -15,7 +15,7 @@ namespace gloomy {
         template<typename... Attr>
         VertexArray(Attr... attributes) : attributes{ {attributes...} } {
             static_assert(std::conjunction_v<std::is_same_v<Attr, gloomy::DynamicAttribute>...>, "Variadic constructor accepts only DynamicAttributes.");
-        };
+        }
 
         VertexArray(std::vector<gloomy::DynamicAttribute> attributes) : attributes(attributes) {}
 

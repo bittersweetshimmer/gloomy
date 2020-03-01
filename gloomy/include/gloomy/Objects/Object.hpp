@@ -25,13 +25,13 @@ namespace gloomy {
 	};
 
 	template<typename T>
-	struct Owned final : T {
-		virtual ~Owned() { static_cast<T*>(this)->release(); }
-		Owned() = default;
-		Owned(T&& t) : T(std::move(t)) {}
-		Owned(Owned&& o) : T(std::move(static_cast<T&&>(std::move(o)))) {}
-		Owned& operator=(T&& o) { *static_cast<T*>(this) = std::move(o); return *this; }
-		Owned& operator=(Owned&& o) { *static_cast<T*>(this) = static_cast<T&&>(std::move(o)); return *this; }
+	struct OwnedObject final : T {
+		virtual ~OwnedObject() { static_cast<T*>(this)->release(); }
+		OwnedObject() = default;
+		OwnedObject(T&& t) : T(std::move(t)) {}
+		OwnedObject(OwnedObject&& o) : T(std::move(static_cast<T&&>(std::move(o)))) {}
+		OwnedObject& operator=(T&& o) { *static_cast<T*>(this) = std::move(o); return *this; }
+		OwnedObject& operator=(OwnedObject&& o) { *static_cast<T*>(this) = static_cast<T&&>(std::move(o)); return *this; }
 	};
 
 	template<typename T>
@@ -50,8 +50,8 @@ namespace gloomy {
 		virtual inline void generate() final;
 		virtual inline void release() final;
 
-		using object_type = T;
-		using Owned = Owned<T>;
+		using ObjectType = T;
+		using Owned = OwnedObject<T>;
 	protected:
 		ID<T> id = null_id<T>();
 	};
@@ -105,32 +105,32 @@ namespace gloomy {
 	}
 
 	template<typename T, typename... Args>
-	Owned<T> make(Args&&... args) {
-		return Owned<T>(std::move(args)...);
-	};
+	OwnedObject<T> make(Args&&... args) {
+		return OwnedObject<T>(std::move(args)...);
+	}
 
 	template<typename T, typename I>
-	Owned<T> make(std::initializer_list<I> args) {
-		return Owned<T>(args);
-	};
+	OwnedObject<T> make(std::initializer_list<I> args) {
+		return OwnedObject<T>(args);
+	}
 
 
 	template<typename T, typename... Args>
-	Owned<T> make_generated(Args&&... args) {
+	OwnedObject<T> make_generated(Args&&... args) {
 		auto value = T(std::forward<Args>(args)...);
 		value.generate();
-		return Owned<T>(std::move(value));
-	};
+		return OwnedObject<T>(std::move(value));
+	}
 
 	template<typename T, typename I>
-	Owned<T> make_generated(std::initializer_list<I> args) {
+	OwnedObject<T> make_generated(std::initializer_list<I> args) {
 		auto value = T(args);
 		value.generate();
-		return Owned<T>(std::move(value));
-	};
+		return OwnedObject<T>(std::move(value));
+	}
 
 	template<typename T, typename... Args>
-	Owned<T> make_ready(Args&&... args) {
+	OwnedObject<T> make_ready(Args&&... args) {
 		auto value = T(std::forward<Args>(args)...);
 		value.generate();
 
@@ -146,11 +146,11 @@ namespace gloomy {
 			else value.commit();
 		}
 
-		return Owned<T>(std::move(value));
-	};
+		return OwnedObject<T>(std::move(value));
+	}
 
 	template<typename T, typename I>
-	Owned<T> make_ready(std::initializer_list<I> args) {
+	OwnedObject<T> make_ready(std::initializer_list<I> args) {
 		auto value = T(args);
 
 		value.generate();
@@ -166,6 +166,6 @@ namespace gloomy {
 			else value.commit();
 		}
 
-		return Owned<T>(std::move(value));
-	};
-};
+		return OwnedObject<T>(std::move(value));
+	}
+}

@@ -34,4 +34,4 @@ namespace gloomy {
 
     template<PixelDataType T>
     using from_pixel_data_type = gloomy::from_gl_type<gloomy::to_enum<Type>(gloomy::from_enum(T))>;
-};
+}

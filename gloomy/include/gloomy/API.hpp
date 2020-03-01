@@ -10,7 +10,7 @@ namespace gloomy {
 	template<typename T>
 	inline void draw_indexed(PrimitiveKind kind, gloomy::Size size) {
 		gloomy::gl::draw_elements(kind, size, gloomy::index_type<T>());
-	};
+	}
 
 	template<typename T>
 	inline void fill(T& color) {
