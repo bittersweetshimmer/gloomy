@@ -13,6 +13,9 @@ If you're using Visual Studio then it's `msbuild yadda yadda`. This works fine [
 msbuild gloomy.sln /m
 ```
 
+### Examples
+Check [this](https://github.com/bittersweetshimmer/gloomy-learnopengl) repo.
+
 ### 3rd party code
 - [bitmask](https://github.com/oliora/bitmask) - Type safe bitmask - `BSL-1.0`
 - [glad](https://glad.dav1d.de/) - GL loader-generator
