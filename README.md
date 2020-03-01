@@ -3,6 +3,7 @@ Some kind of safer OpenGL wrappers and convenience namespace.
 
 ### Build
 ```sh
+> git submodule update --init --recursive # pull the dependencies
 > mkdir build
 > cd build
 > cmake .. # just a static library
