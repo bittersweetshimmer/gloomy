@@ -19,6 +19,8 @@
 #include <gloomy/Objects/Buffer.hpp>
 #include <gloomy/Objects/Bindable.hpp>
 #include <gloomy/Objects/Committable.hpp>
+#include <gloomy/Objects/Framebuffer.hpp>
+#include <gloomy/Objects/Renderbuffer.hpp>
 
 #include <gloomy/GL/Raw/Enum.hpp>
 #include <gloomy/GL/Raw/API.hpp>

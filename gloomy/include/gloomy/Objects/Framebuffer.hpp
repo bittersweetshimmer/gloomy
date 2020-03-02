@@ -17,6 +17,7 @@ namespace gloomy {
     struct Framebuffer : public Object<Framebuffer>, public Bindable<Framebuffer>, public Committable<Framebuffer> {
         using Object<Framebuffer>::Object;
 
+        Framebuffer() : texture2d(std::nullopt), renderbuffer(std::nullopt) {}
         Framebuffer(Framebuffer&& other) noexcept;
         Framebuffer& operator=(Framebuffer&& other) noexcept;
 
@@ -24,8 +25,8 @@ namespace gloomy {
         inline void attach_renderbuffer(const gloomy::AnyObject& attachment) { this->renderbuffer = std::ref(attachment); } 
     
     private:
-        std::reference_wrapper<const gloomy::AnyObject> texture2d;
-        std::reference_wrapper<const gloomy::AnyObject> renderbuffer;
+        std::optional<std::reference_wrapper<const gloomy::AnyObject>> texture2d;
+        std::optional<std::reference_wrapper<const gloomy::AnyObject>> renderbuffer;
         friend struct CommittableTrait<Framebuffer>;
     };
 
@@ -48,21 +49,25 @@ namespace gloomy {
     };
 
     template<> struct CommittableTrait<Framebuffer> {
-        static constexpr bool bind_before_commit = false;
+        static constexpr bool bind_before_commit = true;
         static inline void commit(const Framebuffer& framebuffer) {
-            gl::framebuffer_texture2d(
-                gloomy::FramebufferTarget::FRAMEBUFFER,
-                gloomy::FramebufferAttachment::COLOR_ATTACHMENT0,
-                gloomy::FramebufferTextureTarget::TEXTURE_2D,
-                framebuffer.texture2d.get().get_raw_id()
-            );
+            if (framebuffer.texture2d.has_value()) {
+                gl::framebuffer_texture2d(
+                    gloomy::FramebufferTarget::FRAMEBUFFER,
+                    gloomy::FramebufferAttachment::COLOR_ATTACHMENT0,
+                    gloomy::FramebufferTextureTarget::TEXTURE_2D,
+                    framebuffer.texture2d.value().get().get_raw_id()
+                );
+            }
 
-            gl::framebuffer_renderbuffer(
-                gloomy::FramebufferTarget::FRAMEBUFFER,
-                gloomy::FramebufferAttachment::DEPTH_STENCIL_ATTACHMENT,
-                gloomy::RenderbufferTarget::RENDERBUFFER,
-                framebuffer.renderbuffer.get().get_raw_id()
-            );
+            if (framebuffer.renderbuffer.has_value()) {
+                gl::framebuffer_renderbuffer(
+                    gloomy::FramebufferTarget::FRAMEBUFFER,
+                    gloomy::FramebufferAttachment::DEPTH_STENCIL_ATTACHMENT,
+                    gloomy::RenderbufferTarget::RENDERBUFFER,
+                    framebuffer.renderbuffer.value().get().get_raw_id()
+                );
+            }
         };
     };
 }

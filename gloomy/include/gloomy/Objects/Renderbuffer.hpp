@@ -48,7 +48,7 @@ namespace gloomy {
     };
 
     template<> struct CommittableTrait<Renderbuffer> {
-        static constexpr bool bind_before_commit = false;
+        static constexpr bool bind_before_commit = true;
         static inline void commit(const Renderbuffer& renderbuffer) {
             gl::renderbuffer_storage(gloomy::RenderbufferTarget::RENDERBUFFER, renderbuffer.format, renderbuffer.width, renderbuffer.height);
         };
