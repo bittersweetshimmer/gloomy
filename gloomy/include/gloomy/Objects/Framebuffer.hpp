@@ -20,8 +20,8 @@ namespace gloomy {
         Framebuffer(Framebuffer&& other) noexcept;
         Framebuffer& operator=(Framebuffer&& other) noexcept;
 
-        inline void attach_texture2d(const gloomy::AnyObject& texture2d) { this->texture2d = std::ref(texture2d); } 
-        inline void attach_renderbuffer(const gloomy::AnyObject& renderbuffer) { this->renderbuffer = std::ref(renderbuffer); } 
+        inline void attach_texture2d(const gloomy::AnyObject& attachment) { this->texture2d = std::ref(attachment); } 
+        inline void attach_renderbuffer(const gloomy::AnyObject& attachment) { this->renderbuffer = std::ref(attachment); } 
     
     private:
         std::reference_wrapper<const gloomy::AnyObject> texture2d;
