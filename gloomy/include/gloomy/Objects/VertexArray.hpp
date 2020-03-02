@@ -17,7 +17,7 @@ namespace gloomy {
             static_assert(std::conjunction_v<std::is_same_v<Attr, gloomy::DynamicAttribute>...>, "Variadic constructor accepts only DynamicAttributes.");
         }
 
-        VertexArray(std::vector<gloomy::DynamicAttribute> attributes) : attributes(attributes) {}
+        VertexArray(std::vector<gloomy::DynamicAttribute>&& attributes) : attributes(std::move(attributes)) {}
 
         VertexArray(VertexArray&& other) noexcept;
         VertexArray& operator=(VertexArray&& other) noexcept;
@@ -25,8 +25,12 @@ namespace gloomy {
         template<typename... Attr>
         inline void set_attributes(Attr... attributes);
         inline void set_attributes(std::vector<gloomy::DynamicAttribute> attributes);
+        template<typename... Attr>
+        inline void push_attributes(Attr... attributes);
+        inline void push_attributes(std::vector<gloomy::DynamicAttribute> attributes);
         inline const std::vector<gloomy::DynamicAttribute>& get_attributes();
 
+        inline void enable_attribute(size_t index);
     private:
         std::vector<gloomy::DynamicAttribute> attributes;
 
@@ -78,12 +82,53 @@ namespace gloomy {
     };
 
     template<typename ...Attr>
-    inline void VertexArray::set_attributes(Attr ...attributes) {
-        this->attributes = { attributes... };
+    inline void VertexArray::set_attributes(Attr ...new_attributes) {
+        this->attributes = { new_attributes... };
     }
 
     inline void VertexArray::set_attributes(std::vector<gloomy::DynamicAttribute> new_attributes) {
         this->attributes = new_attributes;
+    }
+
+    template<typename ...Attr>
+    inline void VertexArray::push_attributes(Attr ...new_attributes) {
+        std::vector<gloomy::DynamicAttribute> new_attributes = { new_attributes... };
+        this->attributes.insert(this->attributes.end(), std::begin(new_attributes), std::end(new_attributes));
+    }
+
+    inline void VertexArray::push_attributes(std::vector<gloomy::DynamicAttribute> new_attributes) {
+        this->attributes.insert(this->attributes.end(), std::begin(new_attributes), std::end(new_attributes));
+    }
+
+    inline void VertexArray::enable_attribute(size_t index) {
+        auto attrib_index = 0;
+        for (auto i = 0; i < this->attributes.size(); ++i) {
+            const auto& attribute = this->attributes[i];
+
+            if (i != index) {
+                for (auto part = 0; part < attribute.size; part += attribute.part_length()) {
+                    if (attribute.padding) continue;
+                    attrib_index += 1;
+                }
+            }
+            else {
+                for (auto part = 0; part < attribute.size; part += attribute.part_length()) {
+                    GLOOMY_CHECK(gl::raw::enable_vertex_attrib_array(attrib_index));
+                    GLOOMY_CHECK(gl::raw::vertex_attrib_pointer(attrib_index,
+                        attribute.size,
+                        from_enum(attribute.type),
+                        attribute.normalized,
+                        attribute.stride,
+                        reinterpret_cast<const void*>(attribute.offset)
+                    ));
+
+                    if (attribute.instanced) {
+                        GLOOMY_CHECK(gl::raw::vertex_attrib_divisor(attrib_index, 1));
+                    }
+                }
+                break;
+            }
+        };
     }
 
     inline const std::vector<gloomy::DynamicAttribute>& gloomy::VertexArray::get_attributes() {
