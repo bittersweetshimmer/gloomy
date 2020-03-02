@@ -8,7 +8,7 @@ namespace gloomy {
 		IndexType index_type = IndexType::U32;
 		gloomy::Size size = 0;
 
-		Primitive(PrimitiveKind kind, IndexType index_type, gloomy::Size size) :
+		constexpr Primitive(PrimitiveKind kind, IndexType index_type, gloomy::Size size) :
 			kind(kind),
 			index_type(index_type),
 			size(size) {}

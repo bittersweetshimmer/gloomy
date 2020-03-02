@@ -43,7 +43,7 @@ namespace gloomy {
         static inline void bind(const Buffer<Kind>& buffer) {
             gl::bind_buffer(Kind, buffer.get_raw_id());
         };
-        static inline void unbind(const Buffer<Kind>& buffer) {
+        static inline void unbind(const Buffer<Kind>&) {
             gl::unbind_buffer(Kind);
         };
     };
