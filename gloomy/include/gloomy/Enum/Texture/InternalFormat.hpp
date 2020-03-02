@@ -6,7 +6,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class InternalFormat : Enum {
+    enum class TextureInternalFormat : Enum {
         DEPTH = gl::raw::DEPTH_COMPONENT,
         DEPTH_STENCIL = gl::raw::DEPTH_STENCIL,
         RED = gl::raw::RED,

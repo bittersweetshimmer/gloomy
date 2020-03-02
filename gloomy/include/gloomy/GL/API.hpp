@@ -24,6 +24,15 @@
 #include <gloomy/Enum/BufferBit.hpp>
 #include <gloomy/Enum/Capability.hpp>
 
+#include <gloomy/Enum/Framebuffer/Target.hpp>
+#include <gloomy/Enum/Framebuffer/Status.hpp>
+
+#include <gloomy/Enum/Renderbuffer/Target.hpp>
+#include <gloomy/Enum/Renderbuffer/InternalFormat.hpp>
+
+#include <gloomy/Enum/Framebuffer/Attachment.hpp>
+#include <gloomy/Enum/Framebuffer/TextureTarget.hpp>
+
 namespace gloomy::gl {
     inline void disable(gloomy::Capability cap) {
         GLOOMY_CHECK(gl::raw::disable(gloomy::from_enum(cap)));
@@ -37,7 +46,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::clear(mask.bits()));
     }
 
-    inline void clear_color(Float red, Float green, Float blue, Float alpha) { GLOOMY_CHECK(gl::raw::clear_color(red, green, blue, alpha)); }
+    inline void clear_color(gloomy::Float red, gloomy::Float green, gloomy::Float blue, gloomy::Float alpha) { GLOOMY_CHECK(gl::raw::clear_color(red, green, blue, alpha)); }
 
     template<typename T>
     inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, const T& container) {
@@ -69,6 +78,64 @@ namespace gloomy::gl {
         gloomy::RawID id;
         GLOOMY_CHECK(id = gl::raw::create_program());
         return id;
+    }
+
+    inline void bind_renderbuffer(gloomy::RenderbufferTarget target, gloomy::RawID id) {
+        assert(id != 0 && "Binding not generated Renderbuffer.");
+        GLOOMY_CHECK(gl::raw::bind_renderbuffer(gloomy::from_enum(target), id));
+    }
+
+    inline void unbind_renderbuffer(gloomy::RenderbufferTarget target) {
+        GLOOMY_CHECK(gl::raw::bind_renderbuffer(gloomy::from_enum(target), gloomy::null_raw_id));
+    }
+
+    inline void delete_renderbuffer(gloomy::RawID id) {
+        assert(id != 0 && "Releasing null Renderbuffer.");
+        GLOOMY_CHECK(gl::raw::delete_renderbuffers(1, &id));
+    }
+
+	inline gloomy::RawID gen_renderbuffer() {
+        auto raw_id = gloomy::null_raw_id;
+        GLOOMY_CHECK(gloomy::gl::raw::gen_renderbuffers(1, &raw_id));
+        return raw_id;
+    }
+
+    inline void renderbuffer_storage(gloomy::RenderbufferTarget target, gloomy::RenderbufferInternalFormat format, gloomy::U32 width, gloomy::U32 height) {
+        GLOOMY_CHECK(gloomy::gl::raw::renderbuffer_storage(gloomy::from_enum(target), gloomy::from_enum(format), static_cast<gloomy::Size>(width), static_cast<gloomy::Size>(height)));
+    }
+
+    inline void framebuffer_texture2d(gloomy::FramebufferTarget target, gloomy::FramebufferAttachment attachment, gloomy::FramebufferTextureTarget tex_target, gloomy::RawID texture, gloomy::I32 level = 0) {
+        GLOOMY_CHECK(gloomy::gl::raw::framebuffer_texture2d(gloomy::from_enum(target), gloomy::from_enum(attachment), gloomy::from_enum(tex_target), texture, level));
+    }
+
+    inline void framebuffer_renderbuffer(gloomy::FramebufferTarget target, gloomy::FramebufferAttachment attachment, gloomy::RenderbufferTarget renderbuffer_target, gloomy::RawID renderbuffer) {
+        GLOOMY_CHECK(gloomy::gl::raw::framebuffer_renderbuffer(gloomy::from_enum(target), gloomy::from_enum(attachment), gloomy::from_enum(renderbuffer_target), renderbuffer));
+    } 
+
+    inline void bind_framebuffer(gloomy::FramebufferTarget target, gloomy::RawID id) {
+        assert(id != 0 && "Binding not generated Framebuffer.");
+        GLOOMY_CHECK(gl::raw::bind_framebuffer(gloomy::from_enum(target), id));
+    }
+
+    inline void unbind_framebuffer(gloomy::FramebufferTarget target) {
+        GLOOMY_CHECK(gl::raw::bind_framebuffer(gloomy::from_enum(target), gloomy::null_raw_id));
+    }
+
+    inline void delete_framebuffer(gloomy::RawID id) {
+        assert(id != 0 && "Releasing null Framebuffer.");
+        GLOOMY_CHECK(gl::raw::delete_framebuffers(1, &id));
+    }
+
+	inline gloomy::RawID gen_framebuffer() {
+        auto raw_id = gloomy::null_raw_id;
+        GLOOMY_CHECK(gloomy::gl::raw::gen_framebuffers(1, &raw_id));
+        return raw_id;
+    }
+
+    inline gloomy::FramebufferStatus check_framebuffer_status(gloomy::FramebufferTarget target) {
+        gloomy::Enum status;
+        GLOOMY_CHECK(status = gloomy::gl::raw::check_framebuffer_status(gloomy::from_enum(target)));
+        return gloomy::to_enum<gloomy::FramebufferStatus>(status);
     }
 
     inline void delete_program(gloomy::RawID id) {

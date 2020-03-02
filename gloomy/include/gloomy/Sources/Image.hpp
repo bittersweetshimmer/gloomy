@@ -14,7 +14,7 @@ namespace gloomy::src {
 
 		Size width = 0;
 		Size height = 0;
-		InternalFormat internal_format = InternalFormat::RGBA;
+		TextureInternalFormat internal_format = TextureInternalFormat::RGBA;
 		PixelFormat pixel_format = PixelFormat::RGBA;
 		PixelDataType pixel_data_type = PixelDataType::U8;
 	};
