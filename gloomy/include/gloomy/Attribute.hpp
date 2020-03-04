@@ -50,7 +50,7 @@ namespace gloomy {
         static constexpr const bool padding = true;
     };
 
-    template<typename Tag, typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type, bool Instanced = false, bool Normalized = false>
+    template<typename Tag, typename T, Size L = priv::get_size_or_default<T>(), bool Instanced = false, typename DT = typename T::value_type, bool Normalized = false>
     struct Attribute final : public util::Distinct<T, Tag> {
         using util::Distinct<T, Tag>::Distinct;
 
@@ -58,45 +58,63 @@ namespace gloomy {
         using type = T;
         using data_type = DT;
 
-        static constexpr const Size size = sizeof(T);
-        static constexpr const Size data_size = sizeof(DT);
-        static constexpr const Size length = L;
+        static constexpr const size_t size = sizeof(T);
+        static constexpr const size_t data_size = sizeof(DT);
+        static constexpr const size_t length = L;
         static constexpr const bool normalized = Normalized;
         static constexpr const bool instanced = Instanced;
         static constexpr const bool padding = false;
 
+        static_assert(size > 16u ? size % 16u == 0 || size % 12u == 0 : true);
+
         using Pad = AttributePadding<T, L, DT>;
+        using Instance = Attribute<Tag, T, L, true, DT, Normalized>;
     };
 
     struct DynamicAttribute final {
     public:
         Type type = gl_type<Float>();
 
-        I32 size = 4u;
-        Size stride = 4u;
+        I32 length = 4u;
+        size_t size = 16u;
+        Size stride = 16u;
         IPointer offset = 0u;
 
         Bool instanced = false;
         Bool normalized = false;
         Bool padding = false;
 
-        constexpr auto part_length() const {
-            return this->size % 4 == 0 ? 4 :
-                this->size % 3 == 0 ? 3 :
-                this->size % 2 == 0 ? 2 : 1;
-        }
+        I32 part_length = 4u;
+        I32 part_size = 16u;
 
         inline gloomy::U32 enable(gloomy::U32 index) const {
             if (this->padding) return index;
             
-            for (auto part = 0; part < this->size; part += this->part_length()) { 
+            for (auto part_offset = 0; part_offset < this->size; part_offset += this->part_size) {
+                std::cout << "Enabling Attribute:\n"
+                    << "\tindex: " << index << "\n"
+                    << "\tsize: " << this->part_size << "\n"
+                    << "\tlength: " << this->part_length << "\n"
+                    << "\ttype: " << from_enum(this->type) << "\n";
+                if (this->normalized) std::cout
+                    << "\tnormalized: true\n";
+                else std::cout
+                    << "\tnormalized: false\n";
+                std::cout
+                    << "\tstride: " << this->stride << "\n"
+                    << "\toffset: " << this->offset + part_offset << "\n";
+                if (this->instanced) std::cout
+                    << "\tinstanced: true\n";
+                else std::cout
+                    << "\tinstanced: false\n";
+
                 GLOOMY_CHECK(gl::raw::enable_vertex_attrib_array(index));
                 GLOOMY_CHECK(gl::raw::vertex_attrib_pointer(index,
-                    this->size,
+                    this->part_length,
                     from_enum(this->type),
                     this->normalized,
                     this->stride,
-                    reinterpret_cast<const void*>(this->offset)
+                    reinterpret_cast<const void*>(this->offset + part_offset)
                 ));
 
                 if (this->instanced) {
@@ -124,26 +142,43 @@ namespace gloomy {
 
         template<typename Attr>
         DynamicAttribute make_attribute(GLsizei stride, intptr_t offset) {
+            static_assert(Attr::size >= 1 && Attr::size <= 64);
+
+            I32 part_length = Attr::length;
+            I32 part_size = Attr::size;
+
+            if (Attr::size > 16) {
+                if (Attr::size % 16 == 0) { part_size = 16; }
+                else if (Attr::size % 12 == 0) { part_size = 12; }
+                part_length = Attr::size / part_size;
+            }
+
             if constexpr (Attr::padding) {
                 return DynamicAttribute{
                     .type = gl_type<typename Attr::data_type>(),
-                    .size = Attr::length,
+                    .length = Attr::length,
+                    .size = Attr::size,
                     .stride = stride,
                     .offset = offset,
                     .instanced = false,
                     .normalized = false,
-                    .padding = Attr::padding
+                    .padding = Attr::padding,
+                    .part_length = part_length,
+                    .part_size = part_size
                 };
             }
             else {
                 return DynamicAttribute{
                     .type = gl_type<typename Attr::data_type>(),
-                    .size = Attr::length,
+                    .length = Attr::length,
+                    .size = Attr::size,
                     .stride = stride,
                     .offset = offset,
                     .instanced = Attr::instanced,
                     .normalized = Attr::normalized,
-                    .padding = Attr::padding
+                    .padding = Attr::padding,
+                    .part_length = part_length,
+                    .part_size = part_size
                 };
             }
         }
