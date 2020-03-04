@@ -85,6 +85,29 @@ namespace gloomy {
                 this->size % 3 == 0 ? 3 :
                 this->size % 2 == 0 ? 2 : 1;
         }
+
+        inline gloomy::U32 enable(gloomy::U32 index) const {
+            if (this->padding) return index;
+            
+            for (auto part = 0; part < this->size; part += this->part_length()) { 
+                GLOOMY_CHECK(gl::raw::enable_vertex_attrib_array(index));
+                GLOOMY_CHECK(gl::raw::vertex_attrib_pointer(index,
+                    this->size,
+                    from_enum(this->type),
+                    this->normalized,
+                    this->stride,
+                    reinterpret_cast<const void*>(this->offset)
+                ));
+
+                if (this->instanced) {
+                    GLOOMY_CHECK(gl::raw::vertex_attrib_divisor(index, 1));
+                }
+
+                index += 1;
+            }
+
+            return index;
+        }
     };
 
     namespace priv {
