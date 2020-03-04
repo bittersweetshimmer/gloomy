@@ -20,6 +20,9 @@ namespace gloomy {
         Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
          : view(src::BufferView::from(container)), usage(usage) {}
 
+        Buffer(src::BufferView&& view, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
+         : view(std::move(view)), usage(usage) {}
+        
         Buffer(Buffer&& other) noexcept;
         Buffer& operator=(Buffer&& other) noexcept;
 
