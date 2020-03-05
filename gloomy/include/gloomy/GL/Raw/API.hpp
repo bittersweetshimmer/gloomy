@@ -110,7 +110,9 @@ namespace gloomy::gl::raw {
 	inline void get_program_info_log(U32 program, Size bufSize, Size* length, Char* infolog) { (glGetProgramInfoLog(program, bufSize, length, infolog)); }
 	inline I32 get_uniform_location(U32 program, const Char* name) { return glGetUniformLocation(program, name); }
 
+	inline void draw_elements_instanced(gloomy::Enum mode, gloomy::Size count, gloomy::Enum type, const void* indices, gloomy::Size instancecount) { glDrawElementsInstanced(mode, count, type, indices, instancecount); }
 	inline void draw_elements(gloomy::Enum mode, Size count, gloomy::Enum type, const void* indices) { (glDrawElements(mode, count, type, indices)); }
+	inline void draw_arrays_instanced(gloomy::Enum mode, gloomy::I32 first, gloomy::Size count, gloomy::Size instancecount) { glDrawArraysInstanced(mode, first, count, instancecount); }
 	inline void draw_arrays(gloomy::Enum mode, I32 first, Size count) { (glDrawArrays(mode, first, count)); }
 
 	inline void uniform_1f(gloomy::I32 location, gloomy::Float v0) { glUniform1f(location, v0); }

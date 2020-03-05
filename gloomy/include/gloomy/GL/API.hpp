@@ -48,21 +48,28 @@ namespace gloomy::gl {
 
     inline void clear_color(gloomy::Float red, gloomy::Float green, gloomy::Float blue, gloomy::Float alpha) { GLOOMY_CHECK(gl::raw::clear_color(red, green, blue, alpha)); }
 
-    template<typename T>
-    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, const T& container) {
-        GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), container.data()));
+    inline void draw_elements_instanced(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, gloomy::Size instance_count, const void* indices = nullptr) {
+        GLOOMY_CHECK(gl::raw::draw_elements_instanced(gloomy::from_enum(kind), size, gloomy::from_enum(type), indices, instance_count));
     }
 
-    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type) {
-        GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), nullptr));
+    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, const void* indices = nullptr) {
+        GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), indices));
+    }
+
+    inline void draw_arrays_instanced(gloomy::PrimitiveKind kind, gloomy::I32 first, gloomy::Size count, gloomy::Size instance_count) {
+        GLOOMY_CHECK(gl::raw::draw_arrays_instanced(gloomy::from_enum(kind), first, count, instance_count));
+    }
+
+    inline void draw_arrays_instanced(gloomy::PrimitiveKind kind, gloomy::Size count, gloomy::Size instance_count) {
+        GLOOMY_CHECK(gl::raw::draw_arrays_instanced(gloomy::from_enum(kind), 0, count, instance_count));
     }
 
     inline void draw_arrays(gloomy::PrimitiveKind kind, gloomy::Size count) {
         GLOOMY_CHECK(gl::raw::draw_arrays(gloomy::from_enum(kind), 0, count));
     }
 
-    inline void draw_arrays(gloomy::PrimitiveKind kind, gloomy::U32 first, gloomy::Size count) {
-        GLOOMY_CHECK(gl::raw::draw_arrays(gloomy::from_enum(kind), static_cast<gloomy::I32>(first), count));
+    inline void draw_arrays(gloomy::PrimitiveKind kind, gloomy::I32 first, gloomy::Size count) {
+        GLOOMY_CHECK(gl::raw::draw_arrays(gloomy::from_enum(kind), first, count));
     }
 
     inline void use_program(gloomy::RawID id) {
