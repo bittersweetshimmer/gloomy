@@ -17,9 +17,8 @@ struct Texture2D : public Object<Texture2D>,
                        public Committable<Texture2D> {
   using Object<Texture2D>::Object;
 
-  Texture2D() : image(std::nullopt) {}
-  Texture2D(const gloomy::src::Image &image)
-      : image(std::make_optional(std::ref(image))){};
+  Texture2D();
+  Texture2D(const gloomy::src::Image &image);
   Texture2D(Texture2D &&other) noexcept;
   Texture2D &operator=(Texture2D &&other) noexcept;
 
@@ -59,28 +58,10 @@ template <> struct CommittableTrait<Texture2D> {
         from_enum(image.pixel_data_type), image.data.get()));
 
     GLOOMY_CHECK(gl::raw::tex_parameter_i(gloomy::from_enum(TextureTarget::TEXTURE_2D),
-                                          gl::raw::TEXTURE_MIN_FILTER, gl::raw::LINEAR));
+                                          gl::raw::TEXTURE_MIN_FILTER, gl::raw::NEAREST));
     GLOOMY_CHECK(gl::raw::tex_parameter_i(gloomy::from_enum(TextureTarget::TEXTURE_2D),
-                                          gl::raw::TEXTURE_MAG_FILTER, gl::raw::LINEAR));
+                                          gl::raw::TEXTURE_MAG_FILTER, gl::raw::NEAREST));
   };
 };
-
-Texture2D::Texture2D(Texture2D &&other) noexcept
-    : Object<Texture2D>(std::move(other.id)),
-      image(std::move(other.image)) {
-  other.id = gloomy::null_id<Texture2D>();
-}
-
-Texture2D& gloomy::Texture2D::operator=(Texture2D &&other) noexcept {
-  if (this != &other) {
-    this->release();
-
-    this->id = std::move(other.id);
-    this->image = std::move(other.image);
-    other.id = gloomy::null_id<Texture2D>();
-  }
-
-  return *this;
-}
 
 } // namespace gloomy

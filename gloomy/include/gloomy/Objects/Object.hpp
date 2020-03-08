@@ -31,7 +31,7 @@ namespace gloomy {
 		OwnedObject(T&& t) : T(std::move(t)) {}
 		OwnedObject(OwnedObject&& o) : T(std::move(static_cast<T&&>(std::move(o)))) {}
 		OwnedObject& operator=(T&& o) { *static_cast<T*>(this) = std::move(o); return *this; }
-		OwnedObject& operator=(OwnedObject&& o) { *static_cast<T*>(this) = static_cast<T&&>(std::move(o)); return *this; }
+		OwnedObject& operator=(OwnedObject&& o) noexcept { *static_cast<T*>(this) = static_cast<T&&>(std::move(o)); return *this; }
 	};
 
 	template<typename T>

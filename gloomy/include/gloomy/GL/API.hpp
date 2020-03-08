@@ -52,8 +52,8 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::draw_elements_instanced(gloomy::from_enum(kind), size, gloomy::from_enum(type), indices, instance_count));
     }
 
-    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, const void* indices = nullptr) {
-        GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), indices));
+    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, gloomy::U32 offset = 0u) {
+        GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), reinterpret_cast<const void*>(offset)));
     }
 
     inline void draw_arrays_instanced(gloomy::PrimitiveKind kind, gloomy::I32 first, gloomy::Size count, gloomy::Size instance_count) {

@@ -71,7 +71,7 @@ namespace gloomy {
 
             this->id = std::move(other.id);
             this->usage = other.usage;
-            this->view = std::move(other.view);
+            this->view = other.view;
 
             other.id = gloomy::null_id<Buffer<Kind>>();
         }

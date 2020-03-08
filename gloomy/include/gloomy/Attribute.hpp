@@ -90,24 +90,7 @@ namespace gloomy {
         inline gloomy::U32 enable(gloomy::U32 index) const {
             if (this->padding) return index;
             
-            for (auto part_offset = 0; part_offset < this->size; part_offset += this->part_size) {
-                std::cout << "Enabling Attribute:\n"
-                    << "\tindex: " << index << "\n"
-                    << "\tsize: " << this->part_size << "\n"
-                    << "\tlength: " << this->part_length << "\n"
-                    << "\ttype: " << from_enum(this->type) << "\n";
-                if (this->normalized) std::cout
-                    << "\tnormalized: true\n";
-                else std::cout
-                    << "\tnormalized: false\n";
-                std::cout
-                    << "\tstride: " << this->stride << "\n"
-                    << "\toffset: " << this->offset + part_offset << "\n";
-                if (this->instanced) std::cout
-                    << "\tinstanced: true\n";
-                else std::cout
-                    << "\tinstanced: false\n";
-
+            for (size_t part_offset = 0; part_offset < this->size; part_offset += this->part_size) {
                 GLOOMY_CHECK(gl::raw::enable_vertex_attrib_array(index));
                 GLOOMY_CHECK(gl::raw::vertex_attrib_pointer(index,
                     this->part_length,
