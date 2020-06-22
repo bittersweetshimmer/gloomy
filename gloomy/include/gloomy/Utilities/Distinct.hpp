@@ -9,17 +9,25 @@ namespace gloomy::util {
     private:
         underlying_type value = underlying_type();
     public:
-        template<typename... As, typename T1 = T, typename std::enable_if_t<std::is_aggregate_v<T1>>* = nullptr>
+        template<typename A, typename A2, typename... As, typename T1 = T, typename std::enable_if_t<std::is_aggregate_v<T1>>* = nullptr>
         constexpr Distinct(
+            A&& argument,
+            A2&& argument2,
             As&&... arguments
         ) : value{{
+            std::forward<A>(argument),
+            std::forward<A2>(argument2),
             std::forward<As>(arguments)...
         }} {}
 
-        template<typename... As, typename T1 = T, typename std::enable_if_t<!std::is_aggregate_v<T1>>* = nullptr>
+        template<typename A, typename A2, typename... As, typename T1 = T, typename std::enable_if_t<!std::is_aggregate_v<T1>>* = nullptr>
         constexpr Distinct(
+            A&& argument,
+            A2&& argument2,
             As&&... arguments
         ) : value(
+            std::forward<A>(argument),
+            std::forward<A2>(argument2),
             std::forward<As>(arguments)...
         ) {}
 
