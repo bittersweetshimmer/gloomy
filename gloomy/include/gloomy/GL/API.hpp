@@ -52,7 +52,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::draw_elements_instanced(gloomy::from_enum(kind), size, gloomy::from_enum(type), indices, instance_count));
     }
 
-    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, gloomy::U32 offset = 0u) {
+    inline void draw_elements(gloomy::PrimitiveKind kind, gloomy::Size size, gloomy::IndexType type, gloomy::SizeIPointer offset = 0u) {
         GLOOMY_CHECK(gl::raw::draw_elements(gloomy::from_enum(kind), size, gloomy::from_enum(type), reinterpret_cast<const void*>(offset)));
     }
 
@@ -287,22 +287,22 @@ namespace gloomy::gl {
         static_assert(std::is_same_v<T, gloomy::Float> || std::is_same_v<T, gloomy::I32> || std::is_same_v<T, gloomy::U32>);
 
         if constexpr (std::is_same_v<T, gloomy::Float>) {
-            if constexpr (M == 1) { gl::raw::uniform_1f(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2f(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3f(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4f(location.get(), std::forward<Ts>(values)...); }
+            if constexpr (M == 1) { gl::raw::uniform_1f(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 2) { gl::raw::uniform_2f(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 3) { gl::raw::uniform_3f(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 4) { gl::raw::uniform_4f(location.get(), static_cast<T>(values)...); }
         }
         else if constexpr (std::is_same_v<T, gloomy::I32>) {
-            if constexpr (M == 1) { gl::raw::uniform_1i(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2i(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3i(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4i(location.get(), std::forward<Ts>(values)...); }
+            if constexpr (M == 1) { gl::raw::uniform_1i(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 2) { gl::raw::uniform_2i(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 3) { gl::raw::uniform_3i(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 4) { gl::raw::uniform_4i(location.get(), static_cast<T>(values)...); }
         }
         else if constexpr (std::is_same_v<T, gloomy::U32>) {
-            if constexpr (M == 1) { gl::raw::uniform_1ui(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2ui(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3ui(location.get(), std::forward<Ts>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4ui(location.get(), std::forward<Ts>(values)...); }
+            if constexpr (M == 1) { gl::raw::uniform_1ui(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 2) { gl::raw::uniform_2ui(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 3) { gl::raw::uniform_3ui(location.get(), static_cast<T>(values)...); }
+            else if constexpr (M == 4) { gl::raw::uniform_4ui(location.get(), static_cast<T>(values)...); }
         }
     }
 }

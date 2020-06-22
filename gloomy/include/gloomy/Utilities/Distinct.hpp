@@ -9,31 +9,36 @@ namespace gloomy::util {
     private:
         underlying_type value = underlying_type();
     public:
-        template<typename A, typename A2, typename... As, typename T1 = T, typename std::enable_if_t<std::is_aggregate_v<T1>>* = nullptr>
+        template<typename... As, typename T1 = T, typename std::enable_if_t<std::is_aggregate_v<T1>>* = nullptr>
         constexpr Distinct(
-            A&& argument,
-            A2&& argument2,
             As&&... arguments
         ) : value{{
-            std::forward<A>(argument),
-            std::forward<A2>(argument2),
             std::forward<As>(arguments)...
         }} {}
 
-        template<typename A, typename A2, typename... As, typename T1 = T, typename std::enable_if_t<!std::is_aggregate_v<T1>>* = nullptr>
+        template<typename... As, typename T1 = T, typename std::enable_if_t<!std::is_aggregate_v<T1>>* = nullptr>
         constexpr Distinct(
-            A&& argument,
-            A2&& argument2,
             As&&... arguments
         ) : value(
-            std::forward<A>(argument),
-            std::forward<A2>(argument2),
             std::forward<As>(arguments)...
         ) {}
 
         explicit constexpr Distinct(const underlying_type& value) : value(value) {}
         explicit constexpr Distinct(underlying_type&& value) : value(std::move(value)) {}
+        
         constexpr Distinct() : value(underlying_type()) {}
+        constexpr Distinct(const Distinct& other) : value(other.value) {}
+        
+        inline Distinct& operator=(const Distinct& other) {
+            this->value = other.value;
+            return *this;
+        }
+        constexpr Distinct(Distinct&& other) : value(std::move(other.value)) {}
+        inline Distinct& operator=(Distinct&& other) {
+            this->value = std::move(other.value);
+            return *this;
+        }
+
         constexpr underlying_type& get() { return value; }
         constexpr underlying_type const& get() const { return value; }
 

@@ -61,6 +61,9 @@ template <> struct CommittableTrait<Texture2D> {
                                           gl::raw::TEXTURE_MIN_FILTER, gl::raw::NEAREST));
     GLOOMY_CHECK(gl::raw::tex_parameter_i(gloomy::from_enum(TextureTarget::TEXTURE_2D),
                                           gl::raw::TEXTURE_MAG_FILTER, gl::raw::NEAREST));
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
   };
 };
 

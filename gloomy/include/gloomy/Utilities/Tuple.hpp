@@ -15,15 +15,15 @@ namespace gloomy::util {
 
 	public:
 		Tuple() : block{} {};
-		Tuple(A&& value, As&&... values) : block{} {
-			this->assign(std::move(value), std::move(values)...);
+		Tuple(A value, As... values) : block{} {
+			this->assign(value, values...);
 		}
 
 		template<typename... Ts>
-		constexpr static Tuple<A, As...> from(Ts&&... values) {
+		constexpr static Tuple<A, As...> from(Ts... values) {
 			Tuple<A, As...> tuple;
 
-			tuple.assign(std::move(values)...);
+			tuple.assign(values...);
 
 			return tuple;
 		}
@@ -39,10 +39,10 @@ namespace gloomy::util {
 		}
 
 		template<typename T, typename... Ts>
-		constexpr void assign(T&& value, Ts&&... values) {
-			this->get<T>() = std::move(value);
+		constexpr void assign(T value, Ts... values) {
+			this->get<T>() = value;
 
-			if constexpr (sizeof...(Ts) > 0) this->assign(std::move(values)...);
+			if constexpr (sizeof...(Ts) > 0) this->assign(values...);
 		}
 	};
 }
