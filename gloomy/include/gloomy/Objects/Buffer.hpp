@@ -1,15 +1,15 @@
 #pragma once
 #include <optional>
+#include <span>
 
 #include <gloomy/gl.hpp>
 #include <gloomy/Objects/Bindable.hpp>
 #include <gloomy/Objects/Committable.hpp>
 #include <gloomy/Objects/Object.hpp>
-#include <gloomy/GL/Raw/API.hpp>
+#include <gloomy/GL/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
 #include <gloomy/Enum/Buffer/Usage.hpp>
 #include <gloomy/Enum/Buffer/Kind.hpp>
-#include <gloomy/Sources/BufferView.hpp>
 
 namespace gloomy {
     template<BufferKind Kind>
@@ -18,16 +18,13 @@ namespace gloomy {
 
         template<typename T>
         Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
-         : view(src::BufferView::from(container)), usage(usage) {}
+            : view(container.begin(), container.end()), usage(usage) {}
 
-        Buffer(src::BufferView&& view, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
-         : view(std::move(view)), usage(usage) {}
-        
         Buffer(Buffer&& other) noexcept;
         Buffer& operator=(Buffer&& other) noexcept;
 
         BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW);
-        src::BufferView view;
+        std::span<const std::byte> view;
 
         constexpr static BufferKind kind = Kind;
         friend struct Committable<Buffer>::Trait;
@@ -60,7 +57,7 @@ namespace gloomy {
 
     template<BufferKind Kind>
     Buffer<Kind>::Buffer(Buffer&& other) noexcept
-        : Object<Buffer<Kind>>(std::move(other.id)), usage(other.usage), view(std::move(other.view)) {
+    : Object<Buffer<Kind>>(std::move(other.id)), usage(other.usage), view(std::move(other.view)) {
         other.id = gloomy::null_id<Buffer<Kind>>();
     }
 

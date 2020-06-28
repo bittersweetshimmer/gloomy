@@ -4,7 +4,7 @@
 #include <gloomy/Objects/UniformLocation.hpp>
 #include <gloomy/TypeAliases.hpp>
 #include <gloomy/Utilities/Distinct.hpp>
-#include <gloomy/GL/Raw/API.hpp>
+#include <gloomy/GL/API.hpp>
 #include <gloomy/Objects/ID.hpp>
 
 namespace gloomy {

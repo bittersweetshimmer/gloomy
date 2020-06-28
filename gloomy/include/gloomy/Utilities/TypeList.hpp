@@ -1,14 +1,15 @@
 #pragma once
+#include <type_traits>
 
 namespace gloomy::util {
     template<typename T, typename R, typename... Rs>
-    constexpr auto type_offset(size_t acc = 0) {
+    constexpr auto type_offset(std::size_t acc = 0) {
         if constexpr (std::is_same_v<T, R>) return acc;
         else return type_offset<T, Rs...>(acc + sizeof(R));
     }
 
     template<typename T, typename R, typename... Rs>
-    constexpr auto type_index(size_t acc = 0) {
+    constexpr auto type_index(std::size_t acc = 0) {
         if constexpr (std::is_same_v<T, R>) return acc;
         else return type_index<T, Rs...>(acc + 1);
     }

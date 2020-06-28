@@ -4,11 +4,11 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class IndexType : gloomy::Enum {
-		U8 = gl::raw::UNSIGNED_BYTE,
-		U16 = gl::raw::UNSIGNED_SHORT,
-		U32 = gl::raw::UNSIGNED_INT
-	};
+    enum class IndexType : gloomy::Enum {
+        U8 = gl::raw::UNSIGNED_BYTE,
+        U16 = gl::raw::UNSIGNED_SHORT,
+        U32 = gl::raw::UNSIGNED_INT
+    };
 
     template<typename T>
     constexpr IndexType index_type() = delete;

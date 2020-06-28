@@ -5,7 +5,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class PixelFormat : Enum {
+    enum class PixelFormat : gloomy::Enum {
         RED = gl::raw::RED,
         RED_GREEN = gl::raw::RG,
         BGR = gl::raw::BGR,

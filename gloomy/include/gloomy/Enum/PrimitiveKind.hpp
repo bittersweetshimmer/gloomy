@@ -5,8 +5,8 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class PrimitiveKind : Enum {
-	    POINTS = gl::raw::POINTS,
+    enum class PrimitiveKind : gloomy::Enum {
+        POINTS = gl::raw::POINTS,
         LINE_STRIP = gl::raw::LINE_STRIP,
         LINE_LOOP = gl::raw::LINE_LOOP,
         LINES = gl::raw::LINES,
@@ -18,5 +18,5 @@ namespace gloomy {
         TRIANGLE_STRIP_ADJACENCY = gl::raw::TRIANGLE_STRIP_ADJACENCY,
         TRIANGLES_ADJACENCY = gl::raw::TRIANGLES_ADJACENCY,
         PATCHES = gl::raw::PATCHES
-	};
+    };
 }

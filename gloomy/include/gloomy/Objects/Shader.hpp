@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <iostream>
 #include <optional>
 #include <functional>
@@ -7,9 +8,8 @@
 #include <gloomy/gl.hpp>
 #include <gloomy/Objects/Committable.hpp>
 #include <gloomy/Objects/Object.hpp>
-#include <gloomy/GL/Raw/API.hpp>
+#include <gloomy/GL/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
-#include <gloomy/Sources/Shader.hpp>
 #include <gloomy/Enum/Shader/Kind.hpp>
 
 namespace gloomy {
@@ -17,14 +17,14 @@ namespace gloomy {
     struct Shader : public Object<Shader<Kind>>, public Committable<Shader<Kind>> {
         using Object<Shader<Kind>>::Object;
 
-        Shader() : source(std::nullopt) {}
-        Shader(const gloomy::src::Shader<Kind>& shader_source) : source(std::make_optional(std::ref(shader_source))) {};
+        Shader(const std::string& source) : source(source) {};
+        Shader(std::string&& source) : source(std::move(source)) {};
         Shader(Shader&& other) noexcept;
         Shader& operator=(Shader&& other) noexcept;
 
         constexpr static ShaderKind kind = Kind;
 
-        std::optional<std::reference_wrapper<const gloomy::src::Shader<Kind>>> source;
+        std::string source;
     };
 
     template<ShaderKind Kind> struct ObjectTrait<Shader<Kind>> {
@@ -38,10 +38,7 @@ namespace gloomy {
 
     template<ShaderKind Kind> struct CommittableTrait<Shader<Kind>> {
         static inline void commit(const Shader<Kind>& shader) {
-            assert(shader.source.has_value() && "No source bound.");
-            const auto& shader_source = shader.source.value().get();
-
-            const char* c_source = shader_source.source.c_str();
+            const char* c_source = shader.source.c_str();
 
             GLOOMY_CHECK(gl::raw::shader_source(shader.get_raw_id(), 1, &c_source, nullptr));
             GLOOMY_CHECK(gl::raw::compile_shader(shader.get_raw_id()));
@@ -55,8 +52,6 @@ namespace gloomy {
                     GLOOMY_CHECK(gl::raw::get_shader_info_log(shader.get_raw_id(), 512, nullptr, info));
 
                     std::cerr << "Shader compilation failed: " << "\n\tShader object id: " << shader.get_raw_id() << "\n\tInfo log: " << info << "\n" << std::flush;
-
-                    assert(success && "Shader compilation failed.");
                 }
             }
         };

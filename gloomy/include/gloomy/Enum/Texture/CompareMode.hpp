@@ -6,8 +6,8 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class TextureCompareMode {
-		REF_TO_TEXTURE = gl::raw::COMPARE_REF_TO_TEXTURE,
-		NONE = gl::raw::NONE
-	};
+    enum class TextureCompareMode : gloomy::Enum {
+        REF_TO_TEXTURE = gl::raw::COMPARE_REF_TO_TEXTURE,
+        NONE = gl::raw::NONE
+    };
 }

@@ -6,7 +6,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class RenderbufferTarget : gloomy::Enum {
-		RENDERBUFFER = gl::raw::RENDERBUFFER
-	};
+    enum class RenderbufferTarget : gloomy::Enum {
+        RENDERBUFFER = gl::raw::RENDERBUFFER
+    };
 }

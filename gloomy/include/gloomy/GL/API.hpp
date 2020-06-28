@@ -1,5 +1,6 @@
 #pragma once
 
+#include <span>
 #include <cassert>
 #include <memory>
 #include <bitset>
@@ -7,8 +8,6 @@
 #include <gloomy/GL/Raw/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
 #include <gloomy/Objects/ID.hpp>
-
-#include <gloomy/Sources/BufferView.hpp>
 
 #include <gloomy/Enum/Shader/Kind.hpp>
 #include <gloomy/Enum/Buffer/Kind.hpp>
@@ -81,7 +80,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::use_program(gloomy::null_raw_id));
     }
 
-	inline gloomy::RawID create_program() {
+    inline gloomy::RawID create_program() {
         gloomy::RawID id;
         GLOOMY_CHECK(id = gl::raw::create_program());
         return id;
@@ -101,7 +100,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::delete_renderbuffers(1, &id));
     }
 
-	inline gloomy::RawID gen_renderbuffer() {
+    inline gloomy::RawID gen_renderbuffer() {
         auto raw_id = gloomy::null_raw_id;
         GLOOMY_CHECK(gloomy::gl::raw::gen_renderbuffers(1, &raw_id));
         return raw_id;
@@ -133,7 +132,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::delete_framebuffers(1, &id));
     }
 
-	inline gloomy::RawID gen_framebuffer() {
+    inline gloomy::RawID gen_framebuffer() {
         auto raw_id = gloomy::null_raw_id;
         GLOOMY_CHECK(gloomy::gl::raw::gen_framebuffers(1, &raw_id));
         return raw_id;
@@ -150,7 +149,7 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::delete_program(id));
     }
 
-	inline gloomy::RawID create_shader(ShaderKind kind) {
+    inline gloomy::RawID create_shader(ShaderKind kind) {
         gloomy::RawID id;
         GLOOMY_CHECK(id = gl::raw::create_shader(gloomy::from_enum(kind)));
         return id;
@@ -181,11 +180,11 @@ namespace gloomy::gl {
         GLOOMY_CHECK(gl::raw::bind_buffer(gloomy::from_enum(target), gloomy::null_raw_id)); 
     }
 
-    inline void buffer_data(gloomy::BufferKind target, const gloomy::src::BufferView& view, gloomy::BufferUsage usage) {
-        GLOOMY_CHECK(gl::raw::buffer_data(gloomy::from_enum(target), view.size, view.data, gloomy::from_enum(usage.combined())));
+    inline void buffer_data(gloomy::BufferKind target, std::span<const std::byte> view, gloomy::BufferUsage usage) {
+        GLOOMY_CHECK(gl::raw::buffer_data(gloomy::from_enum(target), view.size(), view.data(), gloomy::from_enum(usage.combined())));
     }
 
-	inline gloomy::RawID gen_texture() { 
+    inline gloomy::RawID gen_texture() { 
         auto raw_id = gloomy::null_raw_id;
         GLOOMY_CHECK(gloomy::gl::raw::gen_textures(1, &raw_id));
         return raw_id;
@@ -220,89 +219,89 @@ namespace gloomy::gl {
     }
 
     template<typename T, size_t M, size_t N>
-    inline void set_uniform(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1, gloomy::Bool transpose = false) {
-        static_assert(M >= 1 && M <= 4);
-        static_assert(N >= 1 && N <= 4);
-        static_assert(std::is_same_v<T, gloomy::Float> || std::is_same_v<T, gloomy::I32> || std::is_same_v<T, gloomy::U32>);
+        inline void set_uniform(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1, gloomy::Bool transpose = false) {
+            static_assert(M >= 1 && M <= 4);
+            static_assert(N >= 1 && N <= 4);
+            static_assert(std::is_same_v<T, gloomy::Float> || std::is_same_v<T, gloomy::I32> || std::is_same_v<T, gloomy::U32>);
 
-        if constexpr (std::is_same_v<T, gloomy::Float>) {
-            if constexpr (M == 1) {
+            if constexpr (std::is_same_v<T, gloomy::Float>) {
+                if constexpr (M == 1) {
+                    static_assert(N == 1);
+                    GLOOMY_CHECK(gl::raw::uniform_1fv(location.get(), count, value));
+                }
+                else if constexpr (M == 2) {
+                    if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_2fv(location.get(), count, value)); }
+                    else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat2fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat2x3fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat2x4fv(location.get(), count, transpose, value)); }
+                    return;
+                }
+                else if constexpr (M == 3) {
+                    if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_3fv(location.get(), count, value)); }
+                    else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat3x2fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat3fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat3x4fv(location.get(), count, transpose, value)); }
+                    return;
+                }
+                else if constexpr (M == 4) {
+                    if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_4fv(location.get(), count, value)); }
+                    else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat4x2fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat4x3fv(location.get(), count, transpose, value)); }
+                    else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat4fv(location.get(), count, transpose, value)); }
+                    return;
+                }
+            }
+            else if constexpr (std::is_same_v<T, gloomy::I32>) {
                 static_assert(N == 1);
-                GLOOMY_CHECK(gl::raw::uniform_1fv(location.get(), count, value));
-            }
-            else if constexpr (M == 2) {
-                if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_2fv(location.get(), count, value)); }
-                else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat2fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat2x3fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat2x4fv(location.get(), count, transpose, value)); }
-                return;
-            }
-            else if constexpr (M == 3) {
-                if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_3fv(location.get(), count, value)); }
-                else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat3x2fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat3fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat3x4fv(location.get(), count, transpose, value)); }
-                return;
-            }
-            else if constexpr (M == 4) {
-                if constexpr (N == 1) { GLOOMY_CHECK(gl::raw::uniform_4fv(location.get(), count, value)); }
-                else if constexpr (N == 2) { GLOOMY_CHECK(gl::raw::uniform_mat4x2fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 3) { GLOOMY_CHECK(gl::raw::uniform_mat4x3fv(location.get(), count, transpose, value)); }
-                else if constexpr (N == 4) { GLOOMY_CHECK(gl::raw::uniform_mat4fv(location.get(), count, transpose, value)); }
-                return;
-            }
-        }
-        else if constexpr (std::is_same_v<T, gloomy::I32>) {
-            static_assert(N == 1);
 
-            if constexpr (M == 1) { GLOOMY_CHECK(gl::raw::uniform_1iv(location.get(), count, value)); }
-            else if constexpr (M == 2) { GLOOMY_CHECK(gl::raw::uniform_2iv(location.get(), count, value)); }
-            else if constexpr (M == 3) { GLOOMY_CHECK(gl::raw::uniform_3iv(location.get(), count, value)); }
-            else if constexpr (M == 4) { GLOOMY_CHECK(gl::raw::uniform_4iv(location.get(), count, value)); }
-        }
-        else if constexpr (std::is_same_v<T, gloomy::U32>) {
-            static_assert(N == 1);
+                if constexpr (M == 1) { GLOOMY_CHECK(gl::raw::uniform_1iv(location.get(), count, value)); }
+                else if constexpr (M == 2) { GLOOMY_CHECK(gl::raw::uniform_2iv(location.get(), count, value)); }
+                else if constexpr (M == 3) { GLOOMY_CHECK(gl::raw::uniform_3iv(location.get(), count, value)); }
+                else if constexpr (M == 4) { GLOOMY_CHECK(gl::raw::uniform_4iv(location.get(), count, value)); }
+            }
+            else if constexpr (std::is_same_v<T, gloomy::U32>) {
+                static_assert(N == 1);
 
-            if constexpr (M == 1) { GLOOMY_CHECK(gl::raw::uniform_1uiv(location.get(), count, value)); }
-            else if constexpr (M == 2) { GLOOMY_CHECK(gl::raw::uniform_2uiv(location.get(), count, value)); }
-            else if constexpr (M == 3) { GLOOMY_CHECK(gl::raw::uniform_3uiv(location.get(), count, value)); }
-            else if constexpr (M == 4) { GLOOMY_CHECK(gl::raw::uniform_4uiv(location.get(), count, value)); }
+                if constexpr (M == 1) { GLOOMY_CHECK(gl::raw::uniform_1uiv(location.get(), count, value)); }
+                else if constexpr (M == 2) { GLOOMY_CHECK(gl::raw::uniform_2uiv(location.get(), count, value)); }
+                else if constexpr (M == 3) { GLOOMY_CHECK(gl::raw::uniform_3uiv(location.get(), count, value)); }
+                else if constexpr (M == 4) { GLOOMY_CHECK(gl::raw::uniform_4uiv(location.get(), count, value)); }
+            }
         }
-    }
 
     template<typename T, size_t M>
-    inline void set_uniform_vec(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1) {
-        gl::set_uniform<T, M, 1>(location, value, count);
-    }
+        inline void set_uniform_vec(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1) {
+            gl::set_uniform<T, M, 1>(location, value, count);
+        }
 
     template<typename T, size_t M>
-    inline void set_uniform_mat(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1, gloomy::Bool transpose = false) {
-        gl::set_uniform<T, M, M>(location, value, count, transpose);
-    }
+        inline void set_uniform_mat(const gloomy::UniformLocation& location, const T* value, gloomy::Size count = 1, gloomy::Bool transpose = false) {
+            gl::set_uniform<T, M, M>(location, value, count, transpose);
+        }
 
     template<typename T, typename... Ts>
-    inline void set_uniform_by_values(const gloomy::UniformLocation& location, Ts&&... values) {
-        constexpr static auto M = sizeof...(Ts);
-        static_assert(M >= 1 && M <= 4);
-        static_assert(std::is_same_v<T, gloomy::Float> || std::is_same_v<T, gloomy::I32> || std::is_same_v<T, gloomy::U32>);
+        inline void set_uniform_by_values(const gloomy::UniformLocation& location, Ts&&... values) {
+            constexpr static auto M = sizeof...(Ts);
+            static_assert(M >= 1 && M <= 4);
+            static_assert(std::is_same_v<T, gloomy::Float> || std::is_same_v<T, gloomy::I32> || std::is_same_v<T, gloomy::U32>);
 
-        if constexpr (std::is_same_v<T, gloomy::Float>) {
-            if constexpr (M == 1) { gl::raw::uniform_1f(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2f(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3f(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4f(location.get(), static_cast<T>(values)...); }
+            if constexpr (std::is_same_v<T, gloomy::Float>) {
+                if constexpr (M == 1) { gl::raw::uniform_1f(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 2) { gl::raw::uniform_2f(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 3) { gl::raw::uniform_3f(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 4) { gl::raw::uniform_4f(location.get(), static_cast<T>(values)...); }
+            }
+            else if constexpr (std::is_same_v<T, gloomy::I32>) {
+                if constexpr (M == 1) { gl::raw::uniform_1i(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 2) { gl::raw::uniform_2i(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 3) { gl::raw::uniform_3i(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 4) { gl::raw::uniform_4i(location.get(), static_cast<T>(values)...); }
+            }
+            else if constexpr (std::is_same_v<T, gloomy::U32>) {
+                if constexpr (M == 1) { gl::raw::uniform_1ui(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 2) { gl::raw::uniform_2ui(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 3) { gl::raw::uniform_3ui(location.get(), static_cast<T>(values)...); }
+                else if constexpr (M == 4) { gl::raw::uniform_4ui(location.get(), static_cast<T>(values)...); }
+            }
         }
-        else if constexpr (std::is_same_v<T, gloomy::I32>) {
-            if constexpr (M == 1) { gl::raw::uniform_1i(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2i(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3i(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4i(location.get(), static_cast<T>(values)...); }
-        }
-        else if constexpr (std::is_same_v<T, gloomy::U32>) {
-            if constexpr (M == 1) { gl::raw::uniform_1ui(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 2) { gl::raw::uniform_2ui(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 3) { gl::raw::uniform_3ui(location.get(), static_cast<T>(values)...); }
-            else if constexpr (M == 4) { gl::raw::uniform_4ui(location.get(), static_cast<T>(values)...); }
-        }
-    }
 }

@@ -6,7 +6,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class RenderbufferInternalFormat : gloomy::Enum {
-		DEPTH24_STENCIL8 = gl::raw::DEPTH24_STENCIL8
-	};
+    enum class RenderbufferInternalFormat : gloomy::Enum {
+        DEPTH24_STENCIL8 = gl::raw::DEPTH24_STENCIL8
+    };
 }

@@ -5,7 +5,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class ShaderKind : Enum {
+    enum class ShaderKind : gloomy::Enum {
         VERTEX = gl::raw::VERTEX_SHADER,
         FRAGMENT = gl::raw::FRAGMENT_SHADER,
         GEOMETRY = gl::raw::GEOMETRY_SHADER,

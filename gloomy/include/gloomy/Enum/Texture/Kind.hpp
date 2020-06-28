@@ -6,12 +6,12 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class Texture1DKind : Enum {
+    enum class Texture1DKind : gloomy::Enum {
         TEXTURE_1D = gl::raw::TEXTURE_1D,
         PROXY_1D = gl::raw::PROXY_TEXTURE_1D
     };
 
-    enum class Texture2DKind : Enum {
+    enum class Texture2DKind : gloomy::Enum {
         TEXTURE_2D = gl::raw::TEXTURE_2D,
         PROXY_2D = gl::raw::PROXY_TEXTURE_2D,
         TEXTURE_1D_ARRAY = gl::raw::TEXTURE_1D_ARRAY,
@@ -27,7 +27,7 @@ namespace gloomy {
         PROXY_CUBE_MAP = gl::raw::PROXY_TEXTURE_CUBE_MAP
     };
 
-    enum class Texture3DKind : Enum {
+    enum class Texture3DKind : gloomy::Enum {
         TEXTURE_3D = gl::raw::TEXTURE_3D,
         PROXY_3D = gl::raw::PROXY_TEXTURE_3D,
         TEXTURE_2D_ARRAY = gl::raw::TEXTURE_2D_ARRAY, 

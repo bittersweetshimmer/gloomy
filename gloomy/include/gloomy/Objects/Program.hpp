@@ -9,7 +9,6 @@
 #include <gloomy/Objects/Object.hpp>
 #include <gloomy/GL/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
-#include <gloomy/Sources/Image.hpp>
 #include <gloomy/Enum/Texture/Kind.hpp>
 #include <gloomy/Objects/Uniform.hpp>
 
@@ -74,7 +73,7 @@ namespace gloomy {
                 if (!success) {
                     GLOOMY_CHECK(gl::raw::get_program_info_log(program.get_raw_id(), 512, nullptr, info));
 
-                    assert(success && "Program linking failed.");
+                    std::cerr << "Program linking failed: " << "\n\tProgram object id: " << program.get_raw_id() << "\n\tInfo log: " << info << "\n" << std::flush;
                 }
             }
         };

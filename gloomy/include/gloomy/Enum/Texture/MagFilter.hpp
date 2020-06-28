@@ -6,7 +6,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class TextureMagFilter {
+    enum class TextureMagFilter : gloomy::Enum {
         NEAREST = gl::raw::NEAREST,
         LINEAR = gl::raw::LINEAR
     };

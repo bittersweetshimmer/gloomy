@@ -4,6 +4,7 @@
 #include <gloomy/Enum/Type.hpp>
 #include <gloomy/Utilities/Distinct.hpp>
 #include <gloomy/Utilities/TypeList.hpp>
+#include <gloomy/GL/Raw/API.hpp>
 
 namespace gloomy {
     namespace priv {
@@ -44,7 +45,7 @@ namespace gloomy {
     template<typename T, Size L = priv::get_size_or_default<T>(), typename DT = typename T::value_type>
     struct AttributePadding final {
         using data_type = DT;
-        
+
         static constexpr const Size size = sizeof(T);
         static constexpr const Size length = L;
         static constexpr const bool padding = true;

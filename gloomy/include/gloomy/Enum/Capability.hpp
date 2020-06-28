@@ -4,7 +4,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class Capability : Enum {
+	enum class Capability : gloomy::Enum {
         CULL_FACE = gl::raw::CULL_FACE,    
         DEPTH_TEST = gl::raw::DEPTH_TEST,    
         SCISSOR_TEST = gl::raw::SCISSOR_TEST,    

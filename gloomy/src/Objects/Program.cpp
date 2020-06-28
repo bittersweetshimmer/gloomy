@@ -2,7 +2,6 @@
 
 gloomy::Program::Program(Program&& other) noexcept
     : Object(std::move(other.id)), shaders(std::move(other.shaders)), cached_locations(std::move(other.cached_locations)) {
-    other.id = gloomy::null_id<Program>();
 }
 
 gloomy::Program& gloomy::Program::operator=(Program&& other) noexcept {
@@ -12,8 +11,6 @@ gloomy::Program& gloomy::Program::operator=(Program&& other) noexcept {
         this->id = std::move(other.id);
         this->shaders = std::move(other.shaders);
         this->cached_locations = std::move(other.cached_locations);
-
-        other.id = gloomy::null_id<Program>();
     }
 
     return *this;

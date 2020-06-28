@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>
+#include <utility>
 
 namespace gloomy::util {
     template <typename T, typename Phantom>
@@ -33,10 +34,10 @@ namespace gloomy::util {
 
         explicit constexpr Distinct(const underlying_type& value) : value(value) {}
         explicit constexpr Distinct(underlying_type&& value) : value(std::move(value)) {}
-        
+
         constexpr Distinct() : value(underlying_type()) {}
         constexpr Distinct(const Distinct& other) : value(other.value) {}
-        
+
         inline Distinct& operator=(const Distinct& other) {
             this->value = other.value;
             return *this;

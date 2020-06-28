@@ -1,0 +1,7 @@
+clang
+%c -std=c18
+%cpp -std=c++2a
+%h %hpp
+-Igloomy/include/
+-Ivendor/bitmask/include/
+-Ivendor/glad/include/

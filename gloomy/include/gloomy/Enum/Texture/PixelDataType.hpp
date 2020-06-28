@@ -6,7 +6,7 @@
 #include <gloomy/Enum/Type.hpp>
 
 namespace gloomy {
-    enum class PixelDataType : Enum {
+    enum class PixelDataType : gloomy::Enum {
          U8 = gl::raw::UNSIGNED_BYTE,
          I8 = gl::raw::BYTE,
          U16 = gl::raw::UNSIGNED_SHORT,
@@ -30,7 +30,7 @@ namespace gloomy {
 	};
 
     template<typename T>
-    constexpr PixelDataType to_pixel_data_type() { return gloomy::to_enum<PixelDataType>(gloomy::from_enum(gloomy::gl_type<T>())); }
+    constexpr PixelDataType pixel_data_type() { return gloomy::to_enum<PixelDataType>(gloomy::from_enum(gloomy::gl_type<T>())); }
 
     template<PixelDataType T>
     using from_pixel_data_type = gloomy::from_gl_type<gloomy::to_enum<Type>(gloomy::from_enum(T))>;

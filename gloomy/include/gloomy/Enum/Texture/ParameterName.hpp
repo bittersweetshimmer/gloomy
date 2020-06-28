@@ -5,7 +5,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-	enum class TextureParameterName : gl::raw::Enum {
+    enum class TextureParameterName : gloomy::Enum {
         DEPTH_STENCIL_TEXTURE_MODE = gl::raw::DEPTH_STENCIL_TEXTURE_MODE,
         BASE_LEVEL = gl::raw::TEXTURE_BASE_LEVEL,
         COMPARE_FUNC = gl::raw::TEXTURE_COMPARE_FUNC,
@@ -23,7 +23,7 @@ namespace gloomy {
         WRAP_S = gl::raw::TEXTURE_WRAP_S,
         WRAP_T = gl::raw::TEXTURE_WRAP_T,
         WRAP_R = gl::raw::TEXTURE_WRAP_R,
-		BORDER_COLOR = gl::raw::TEXTURE_BORDER_COLOR,
+        BORDER_COLOR = gl::raw::TEXTURE_BORDER_COLOR,
         SWIZZLE_RGBA = gl::raw::TEXTURE_SWIZZLE_RGBA
-	};
+    };
 }

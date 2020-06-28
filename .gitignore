@@ -1,3 +1,4 @@
 .vscode/
+.ccls-cache/
 build/**
 tags

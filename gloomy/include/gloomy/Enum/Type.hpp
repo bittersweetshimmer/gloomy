@@ -7,7 +7,7 @@
 #include <gloomy/GL/Raw/Enum.hpp>
 
 namespace gloomy {
-    enum class Type : Enum {
+    enum class Type : gloomy::Enum {
         FLOAT = gl::raw::FLOAT,
         I8 = gl::raw::BYTE,
         U8 = gl::raw::UNSIGNED_BYTE,

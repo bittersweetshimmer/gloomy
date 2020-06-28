@@ -11,7 +11,7 @@
 namespace gloomy {
     struct VertexArray : public Object<VertexArray>, public Bindable<VertexArray>, public Committable<VertexArray> {
         using Object<VertexArray>::Object;
-        
+
         VertexArray(std::vector<gloomy::DynamicAttribute>&& attributes) : attributes(std::move(attributes)) {}
 
         VertexArray(VertexArray&& other) noexcept;
@@ -52,7 +52,7 @@ namespace gloomy {
         static inline void commit(const VertexArray& va) {
             for (auto i = va.current_enabled; i < va.attributes.size(); ++i) {
                 const auto& attribute = va.attributes[i];
-                
+
                 va.current_attribute_index = attribute.enable(va.current_attribute_index);
             }
 
