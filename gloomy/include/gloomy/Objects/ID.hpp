@@ -13,8 +13,8 @@ namespace gloomy {
     struct ID : util::Distinct<RawID, T>, util::NonCopyable {
         ID() : util::Distinct<RawID, T>(null_raw_id) {};
         ID(RawID raw) : util::Distinct<RawID, T>(raw) {};
-        ID(ID&& other) : util::Distinct<RawID, T>(other.get()) { other = ID(null_raw_id); }
-        ID& operator=(ID&& other) { this->get() = other.get(); other = ID(null_raw_id); return *this; }
+        ID(ID&& other) : util::Distinct<RawID, T>(other.get()) { other.get() = null_raw_id; }
+        ID& operator=(ID&& other) { this->get() = other.get(); other.get() = null_raw_id; return *this; }
 
         constexpr auto is_valid() const -> bool { return this->get() != null_raw_id; }
         constexpr auto is_null() const -> bool { return !this->is_valid(); }

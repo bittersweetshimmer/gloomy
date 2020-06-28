@@ -1,4 +1,4 @@
-# gloomy ![appveyor](https://img.shields.io/appveyor/build/bittersweetshimmer/gloomy?style=flat-square)
+# gloomy
 Some kind of safer OpenGL wrappers and convenience namespace.
 
 ### Build
@@ -7,7 +7,7 @@ Some kind of safer OpenGL wrappers and convenience namespace.
 > mkdir build
 > cd build
 > cmake .. # just a static library
-> make -j8 # on Linux/or if you're using make generator
+> cmake --build .
 ```
 If you're using Visual Studio then it's `msbuild yadda yadda`. This works fine [on my machine](https://i.imgur.com/f5uGQ.jpg).
 ```cmd
