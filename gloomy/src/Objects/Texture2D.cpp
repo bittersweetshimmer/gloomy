@@ -1,6 +1,6 @@
 #include <gloomy/Objects/Texture2D.hpp>
 
-gloomy::Texture2D::Texture2D(std::span<const std::byte> image) : image(image) {}
+gloomy::Texture2D::Texture2D(std::span<const std::byte> image, gloomy::Size width, gloomy::Size height) : image(image), width(width), height(height) {}
 gloomy::Texture2D::Texture2D(gloomy::Texture2D &&other) noexcept
     : gloomy::Object<gloomy::Texture2D>(std::move(other.id)),
     image(std::move(other.image)),

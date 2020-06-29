@@ -18,7 +18,7 @@ namespace gloomy {
 
         template<typename T>
         Buffer(const T& container, BufferUsage usage = BufferUsage::from(BufferUsageCombined::STATIC_DRAW))
-            : view(container.begin(), container.end()), usage(usage) {}
+            : view(reinterpret_cast<const std::byte*>(container.data()), sizeof(T) * container.size()), usage(usage) {}
 
         Buffer(Buffer&& other) noexcept;
         Buffer& operator=(Buffer&& other) noexcept;

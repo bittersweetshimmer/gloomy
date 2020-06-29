@@ -3,6 +3,7 @@
 #include <functional>
 #include <optional>
 
+#include <gloomy/Utilities/ByteSpan.hpp>
 #include <gloomy/Enum/Texture/Target.hpp>
 #include <gloomy/GL/API.hpp>
 #include <gloomy/GL/Raw/Enum.hpp>
@@ -20,7 +21,9 @@ namespace gloomy {
     public Committable<Texture2D> {
         using Object<Texture2D>::Object;
 
-        Texture2D(std::span<const std::byte> image);
+        template<typename T>
+        Texture2D(const T* data, std::size_t size, gloomy::Size width, gloomy::Size height) : image(gloomy::util::as_bytes(data, size)), width(width), height(height) {}
+        Texture2D(std::span<const std::byte> image, gloomy::Size width, gloomy::Size height);
         Texture2D(Texture2D &&other) noexcept;
         Texture2D &operator=(Texture2D &&other) noexcept;
 
